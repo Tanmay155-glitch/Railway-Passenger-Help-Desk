@@ -5,6 +5,7 @@ Ingests documents, applies OCR, generates embeddings, and builds search indexes.
 
 import json
 import logging
+import time
 from pathlib import Path
 from typing import List, Dict
 import sys
@@ -161,8 +162,85 @@ def main():
     except Exception as e:
         logger.error(f"  ✗ Failed to extract schema: {e}")
     
-    # TODO: Generate embeddings (Task 2.2)
-    # TODO: Build BM25 index (Task 2.1)
+    # Generate embeddings
+    logger.info(f"\n{'='*60}")
+    logger.info("Generating embeddings...")
+    logger.info(f"{'='*60}")
+    
+    try:
+        from fastembed import TextEmbedding
+        import numpy as np
+        
+        # Initialize embedding model
+        model = TextEmbedding("BAAI/bge-small-en-v1.5")
+        logger.info("Loaded embedding model: BAAI/bge-small-en-v1.5")
+        
+        # Extract texts for embedding
+        texts = [chunk.get('text_for_embedding', chunk.get('text', '')) for chunk in all_chunks]
+        
+        # Generate embeddings
+        logger.info(f"Embedding {len(texts)} chunks...")
+        embeddings_list = list(model.embed(texts))
+        embeddings = np.array(embeddings_list)
+        
+        # Save embeddings
+        emb_file = config.INDEX_DIR / "embeddings.npy"
+        np.save(emb_file, embeddings)
+        
+        logger.info(f"  ✓ Saved embeddings: {embeddings.shape} to {emb_file}")
+        
+    except ImportError:
+        logger.warning("  ✗ fastembed not available, skipping embeddings")
+        logger.warning("  Install with: pip install fastembed")
+    except Exception as e:
+        logger.warning(f"  ✗ Embedding generation failed: {e}")
+    
+    # Build BM25 index
+    logger.info(f"\n{'='*60}")
+    logger.info("Building BM25 index...")
+    logger.info(f"{'='*60}")
+    
+    try:
+        from rank_bm25 import BM25Okapi
+        import pickle
+        
+        # Tokenize texts
+        corpus = []
+        for chunk in all_chunks:
+            text = chunk.get('text_for_embedding', chunk.get('text', ''))
+            tokens = text.lower().split()
+            corpus.append(tokens)
+        
+        # Build BM25
+        bm25 = BM25Okapi(corpus)
+        
+        # Save BM25
+        bm25_file = config.INDEX_DIR / "bm25.pkl"
+        with open(bm25_file, 'wb') as f:
+            pickle.dump(bm25, f)
+        
+        logger.info(f"  ✓ Saved BM25 index to {bm25_file}")
+        
+    except ImportError:
+        logger.warning("  ✗ rank_bm25 not available, skipping BM25")
+        logger.warning("  Install with: pip install rank-bm25")
+    except Exception as e:
+        logger.warning(f"  ✗ BM25 build failed: {e}")
+    
+    # Save manifest
+    manifest = {
+        "build_timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
+        "total_chunks": len(all_chunks),
+        "total_documents": len(doc_stats),
+        "embedding_model": "BAAI/bge-small-en-v1.5",
+        "bm25_model": "BM25Okapi"
+    }
+    
+    manifest_file = config.INDEX_DIR / "manifest.json"
+    with open(manifest_file, 'w', encoding='utf-8') as f:
+        json.dump(manifest, f, indent=2)
+    
+    logger.info(f"  ✓ Saved manifest to {manifest_file}")
     
     # Print summary table
     logger.info(f"\n{'='*60}")
