@@ -1,0 +1,141 @@
+[
+  {
+    "id": "S01",
+    "question": "What is the cancellation charge for Tatkal tickets?",
+    "type": "docs",
+    "expected_doc": "rb_cc08_2025_tatkal.pdf",
+    "expected_has_amount": true
+  },
+  {
+    "id": "S02",
+    "question": "Which trains run from New Delhi to Mumbai Central?",
+    "type": "db",
+    "expected_sql_has": ["trains", "stops", "NDLS", "BCT"]
+  },
+  {
+    "id": "S03",
+    "question": "What is the advance reservation period?",
+    "type": "docs",
+    "expected_doc": "rb_cc10_2024_advance_reservation.pdf",
+    "expected_has_text": ["days", "120", "60"]
+  },
+  {
+    "id": "S04",
+    "question": "How many stations does train 12002 stop at?",
+    "type": "db",
+    "expected_sql_has": ["stops", "12002", "COUNT"]
+  },
+  {
+    "id": "S05",
+    "question": "What are the refund rules for Vande Bharat Sleeper trains?",
+    "type": "docs",
+    "expected_doc": "rb_cc08_2026_vande_bharat_sleeper_refund.pdf",
+    "precedence": "train_specific"
+  },
+  {
+    "id": "S06",
+    "question": "When is the first reservation chart prepared?",
+    "type": "docs",
+    "expected_doc": "rb_cc10_2025_reservation_charts.pdf"
+  },
+  {
+    "id": "S07",
+    "question": "Which trains depart from Delhi between 14:00 and 18:00?",
+    "type": "db",
+    "expected_sql_has": ["departure", "14:00", "18:00"]
+  },
+  {
+    "id": "S08",
+    "question": "What is the cancellation refund if I cancel 10 hours before departure?",
+    "type": "docs",
+    "expected_doc": "irctc_refund_rules_jan2026.pdf",
+    "expected_has_amount": true
+  },
+  {
+    "id": "S09",
+    "question": "List all stations in Maharashtra",
+    "type": "db",
+    "expected_sql_has": ["stations", "state", "Maharashtra"]
+  },
+  {
+    "id": "S10",
+    "question": "What are the new refund rules announced in March 2026?",
+    "type": "docs",
+    "expected_doc": "pib_2026-03-24_reform_express.html"
+  },
+  {
+    "id": "D01",
+    "question": "How much is a ticket from Delhi to Mumbai?",
+    "type": "out_of_scope",
+    "expected_dont_know": true,
+    "reason": "No fare information"
+  },
+  {
+    "id": "D02",
+    "question": "What is my PNR status?",
+    "type": "out_of_scope",
+    "expected_dont_know": true,
+    "reason": "No PNR data"
+  },
+  {
+    "id": "D03",
+    "question": "Will my waitlisted ticket get confirmed?",
+    "type": "out_of_scope",
+    "expected_dont_know": true,
+    "reason": "Cannot predict"
+  },
+  {
+    "id": "D04",
+    "question": "Change the departure time of train 12002 to 15:00",
+    "type": "refuse",
+    "expected_dont_know": true,
+    "reason": "Data modification"
+  },
+  {
+    "id": "C01",
+    "question": "What is Rule 25?",
+    "type": "docs",
+    "exact_match": true,
+    "expected_has_text": ["Rule 25"]
+  },
+  {
+    "id": "C02",
+    "question": "Tell me about Circular CC08/2025",
+    "type": "docs",
+    "exact_match": true,
+    "expected_doc": "rb_cc08_2025_tatkal.pdf"
+  },
+  {
+    "id": "C03",
+    "question": "What changed in the 2026 refund rules compared to 2015?",
+    "type": "docs",
+    "precedence": "newer_over_older",
+    "expected_docs": ["irctc_refund_rules_jan2026.pdf", "indianrail_refund_rules_2015.html"]
+  },
+  {
+    "id": "T01",
+    "question": "How long does train 12002 take from Delhi to Mumbai?",
+    "type": "db",
+    "expected_sql_has": ["12002", "duration"]
+  },
+  {
+    "id": "T02",
+    "question": "Which train types are available in the database?",
+    "type": "db",
+    "expected_sql_has": ["train_types"]
+  },
+  {
+    "id": "T03",
+    "question": "How many trains operate from Western Railway zone?",
+    "type": "db",
+    "expected_sql_has": ["trains", "zone", "WR", "COUNT"]
+  },
+  {
+    "id": "M01",
+    "question": "What is the refund for train 12002 cancelled 24 hours before departure?",
+    "type": "both",
+    "expected_sql": true,
+    "expected_sources": true,
+    "note": "Needs train type from DB + refund rule from docs"
+  }
+]
