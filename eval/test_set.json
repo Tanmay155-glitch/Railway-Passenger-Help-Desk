@@ -137,5 +137,118 @@
     "expected_sql": true,
     "expected_sources": true,
     "note": "Needs train type from DB + refund rule from docs"
+  },
+  {
+    "id": "E01",
+    "question": "What is the refund percentage if I cancel 3 hours before departure?",
+    "type": "docs",
+    "expected_doc": "irctc_refund_rules_jan2026.pdf",
+    "expected_has_text": ["50%"]
+  },
+  {
+    "id": "E02",
+    "question": "Which trains have AC First Class available?",
+    "type": "db",
+    "expected_sql_has": ["trains", "1A"]
+  },
+  {
+    "id": "E03",
+    "question": "What are the Aadhaar requirements for Tatkal booking?",
+    "type": "docs",
+    "expected_doc": "rb_cc08_2025_tatkal.pdf",
+    "note": "Tests OCR on scanned pages"
+  },
+  {
+    "id": "E04",
+    "question": "How many Rajdhani trains are in the database?",
+    "type": "db",
+    "expected_sql_has": ["trains", "Raj", "COUNT"]
+  },
+  {
+    "id": "E05",
+    "question": "What is the gazette number for Vande Bharat Sleeper rules?",
+    "type": "docs",
+    "expected_doc": "rb_cc08_2026_vande_bharat_sleeper_refund.pdf",
+    "expected_has_text": ["G.S.R", "41"]
+  },
+  {
+    "id": "E06",
+    "question": "Which train goes from Mumbai to Chennai?",
+    "type": "db",
+    "expected_sql_has": ["trains", "Mumbai", "Chennai"]
+  },
+  {
+    "id": "E07",
+    "question": "What refund do I get if I cancel 30 minutes before departure?",
+    "type": "docs",
+    "expected_doc": "irctc_refund_rules_jan2026.pdf",
+    "expected_has_amount": true
+  },
+  {
+    "id": "E08",
+    "question": "List all trains that start from Howrah",
+    "type": "db",
+    "expected_sql_has": ["trains", "from_station", "HWH"]
+  },
+  {
+    "id": "E09",
+    "question": "When was the advance reservation period changed from 120 to 60 days?",
+    "type": "docs",
+    "expected_doc": "rb_cc10_2024_advance_reservation.pdf",
+    "note": "Tests date extraction from scanned PDF"
+  },
+  {
+    "id": "E10",
+    "question": "What is the distance covered by train 12002?",
+    "type": "db",
+    "expected_sql_has": ["trains", "12002", "distance"]
+  },
+  {
+    "id": "D05",
+    "question": "What is the current seat availability for train 12002?",
+    "type": "out_of_scope",
+    "expected_dont_know": true,
+    "reason": "No live availability data"
+  },
+  {
+    "id": "D06",
+    "question": "Delete all records for cancelled trains",
+    "type": "refuse",
+    "expected_dont_know": true,
+    "reason": "Data modification request"
+  },
+  {
+    "id": "O01",
+    "question": "Show me trains that travel overnight from Delhi to Kanyakumari",
+    "type": "db",
+    "expected_sql_has": ["day", "overnight"],
+    "note": "Tests overnight journey calculation"
+  },
+  {
+    "id": "O02",
+    "question": "What are the pre-revised refund charges from 2015?",
+    "type": "docs",
+    "expected_doc": "indianrail_refund_rules_2015.html",
+    "note": "Should identify as historical data"
+  },
+  {
+    "id": "O03",
+    "question": "Tell me about train 11039-Slip",
+    "type": "db",
+    "expected_sql_has": ["11039-Slip"],
+    "note": "Tests handling of slip coach trains"
+  },
+  {
+    "id": "O04",
+    "question": "What changes to boarding point rules were announced?",
+    "type": "docs",
+    "expected_doc": "pib_2026-03-24_reform_express.html",
+    "note": "Tests specific section extraction from HTML"
+  },
+  {
+    "id": "O05",
+    "question": "Which trains run in the Southern Railway zone?",
+    "type": "db",
+    "expected_sql_has": ["trains", "zone", "SR"]
   }
 ]

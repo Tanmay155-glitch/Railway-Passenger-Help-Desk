@@ -159,6 +159,9 @@ def execute_safe_sql(
     if timeout_ms is None:
         timeout_ms = config.SQL_TIMEOUT_MS
     
+    # Strip trailing semicolons first (some models add them)
+    sql = sql.strip().rstrip(';').strip()
+    
     # Guard check
     is_safe, reason = guard_sql(sql)
     if not is_safe:

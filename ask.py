@@ -55,14 +55,6 @@ def print_answer(result: dict, use_json: bool = False):
     
     # Status
     print("\n" + "-"*60)
-    status_map = {
-        (True, [], None): "I don't know",
-        (False, [], None): "answered from timetable",
-        (False, [], "sql"): "answered from timetable",
-        (False, "sources", None): "answered from documents",
-        (False, "sources", "sql"): "answered from both documents and timetable"
-    }
-    
     has_sources = len(result["sources"]) > 0
     has_sql = result["sql"] is not None
     

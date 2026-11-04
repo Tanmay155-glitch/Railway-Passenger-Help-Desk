@@ -1,0 +1,54 @@
+CREATE TABLE stations (
+    code       TEXT PRIMARY KEY,
+    name       TEXT NOT NULL,
+    state      TEXT,
+    zone       TEXT,
+    address    TEXT,
+    latitude   REAL,
+    longitude  REAL
+)
+
+CREATE TABLE train_types (
+    type_code  TEXT PRIMARY KEY,
+    meaning    TEXT NOT NULL
+)
+
+CREATE TABLE trains (
+    number             TEXT PRIMARY KEY,
+    name               TEXT NOT NULL,
+    type_code          TEXT REFERENCES train_types(type_code),
+    zone               TEXT,
+    from_station_code  TEXT REFERENCES stations(code),
+    to_station_code    TEXT REFERENCES stations(code),
+    departure          TEXT,
+    arrival            TEXT,
+    duration_min       INTEGER,
+    distance_km        INTEGER,
+    return_train       TEXT,
+    has_1a             INTEGER,
+    has_2a             INTEGER,
+    has_3a             INTEGER,
+    has_sl             INTEGER,
+    has_cc             INTEGER,
+    has_fc             INTEGER
+)
+
+CREATE TABLE schedules (
+    train_number   TEXT NOT NULL REFERENCES trains(number),
+    stop_sequence  INTEGER NOT NULL,
+    station_code   TEXT NOT NULL REFERENCES stations(code),
+    day            INTEGER,
+    arrival        TEXT,
+    departure      TEXT,
+    halt_min       INTEGER,
+    is_halt        INTEGER,
+    PRIMARY KEY (train_number, stop_sequence)
+)
+
+CREATE VIEW stops AS SELECT * FROM schedules WHERE is_halt = 1
+
+-- Notes:
+-- * stops view: SELECT * FROM schedules WHERE is_halt = 1
+-- * Use stops for 'trains from A to B' questions
+-- * train.number is TEXT (keeps leading zeros)
+-- * Overnight: travel_min = (day_b - day_a) * 1440 + minutes(arrival_b) - minutes(departure_a)

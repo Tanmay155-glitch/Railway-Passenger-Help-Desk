@@ -208,8 +208,19 @@ def generate_answer(
     )
     
     try:
-        # Generate answer
-        response = llm_client.generate(prompt, temperature=0.0)
+        # JSON schema for structured output
+        answer_schema = {
+            "type": "object",
+            "properties": {
+                "answer": {"type": "string"},
+                "chunk_ids_used": {"type": "array", "items": {"type": "integer"}},
+                "sufficient": {"type": "boolean"}
+            },
+            "required": ["answer", "chunk_ids_used", "sufficient"]
+        }
+        
+        # Generate answer with JSON schema
+        response = llm_client.generate(prompt, schema=answer_schema, temperature=0.0)
         
         # Parse JSON response
         try:

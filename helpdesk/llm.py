@@ -10,7 +10,8 @@ import json
 import logging
 from pathlib import Path
 from typing import Optional, Dict, Any, List
-import google.generativeai as genai
+from google import genai
+from google.genai import types
 
 from helpdesk.config import config
 
@@ -36,8 +37,8 @@ class GeminiClient:
         if not self.api_key:
             raise ValueError("GEMINI_API_KEY not set. Create .env file with your API key.")
         
-        # Configure the API (never log the key)
-        genai.configure(api_key=self.api_key)
+        # Initialize the new genai client (supports AQ. authentication keys)
+        self.client = genai.Client(api_key=self.api_key)
         
         # Rate limiting: free tier is ~15 RPM
         self.last_request_time = 0
@@ -133,23 +134,23 @@ class GeminiClient:
                 # Rate limiting
                 self._wait_for_rate_limit()
                 
-                # Create model
-                model = genai.GenerativeModel(self.model_name)
-                
                 # Generation config
-                gen_config = {
+                gen_config_params = {
                     "temperature": temperature,
                     "max_output_tokens": 2048,
                 }
                 
                 # Use JSON mode if schema provided
                 if schema:
-                    gen_config["response_mime_type"] = "application/json"
+                    gen_config_params["response_mime_type"] = "application/json"
                 
-                # Generate
-                response = model.generate_content(
-                    prompt,
-                    generation_config=gen_config
+                gen_config = types.GenerateContentConfig(**gen_config_params)
+                
+                # Generate using new SDK
+                response = self.client.models.generate_content(
+                    model=self.model_name,
+                    contents=prompt,
+                    config=gen_config
                 )
                 
                 result = response.text
@@ -175,7 +176,7 @@ class GeminiClient:
                     if "404" in error_str or "not found" in error_str:
                         logger.error(
                             f"Model {self.model_name} not found. "
-                            f"Set GEMINI_MODEL in .env to a valid model name."
+                            f"Set GEMINI_MODEL in .env to a valid model name like 'gemini-2.5-flash'."
                         )
                     raise
                 
@@ -209,13 +210,20 @@ class GeminiClient:
         try:
             self._wait_for_rate_limit()
             
-            result = genai.embed_content(
-                model="models/embedding-001",
-                content=text,
-                task_type="retrieval_document"
+            # Use new SDK for embeddings
+            result = self.client.models.embed_content(
+                model="models/gemini-embedding-001",
+                contents=text
             )
             
-            return result['embedding']
+            # Extract embedding from response
+            if hasattr(result, 'embeddings') and result.embeddings:
+                return result.embeddings[0].values
+            elif hasattr(result, 'embedding'):
+                return result.embedding
+            else:
+                logger.warning(f"Unexpected embedding response format: {result}")
+                return None
             
         except Exception as e:
             logger.warning(f"Embedding failed: {e}")
