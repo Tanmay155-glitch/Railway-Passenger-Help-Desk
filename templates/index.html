@@ -13,7 +13,7 @@
 
         body {
             font-family: 'Segoe UI', 'Arial', sans-serif;
-            background: linear-gradient(135deg, #f5f0ff 0%, #e8d5ff 50%, #dbb7ff 100%);
+            background: linear-gradient(135deg, #e8ebed 0%, #d4dce3 50%, #c5cfd8 100%);
             min-height: 100vh;
             padding: 40px 20px;
         }
@@ -32,13 +32,13 @@
             font-size: 2.5em;
             font-weight: bold;
             margin-bottom: 10px;
-            color: #7c3aed;
-            text-shadow: 2px 2px 4px rgba(124, 58, 237, 0.1);
+            color: #17191C;
+            text-shadow: 2px 2px 4px rgba(146, 157, 167, 0.3);
             letter-spacing: 1px;
         }
 
         .header p {
-            color: #9333ea;
+            color: #929DA7;
             font-size: 1.1em;
         }
 
@@ -46,8 +46,8 @@
             background: white;
             border-radius: 15px;
             padding: 30px;
-            box-shadow: 0 10px 30px rgba(124, 58, 237, 0.15);
-            border: 3px solid #a855f7;
+            box-shadow: 0 10px 30px rgba(23, 25, 28, 0.15);
+            border: 3px solid #929DA7;
             margin-bottom: 30px;
         }
 
@@ -59,24 +59,24 @@
             width: 100%;
             padding: 15px;
             font-size: 1.1em;
-            border: 2px solid #c084fc;
+            border: 2px solid #929DA7;
             border-radius: 8px;
             font-family: 'Segoe UI', Arial, sans-serif;
             transition: border-color 0.3s;
-            background: #faf5ff;
+            background: #f5f7f9;
         }
 
         #questionInput:focus {
             outline: none;
-            border-color: #a855f7;
-            box-shadow: 0 0 15px rgba(168, 85, 247, 0.3);
+            border-color: #17191C;
+            box-shadow: 0 0 15px rgba(146, 157, 167, 0.4);
             background: white;
         }
 
         .btn-ask {
             width: 100%;
             padding: 15px;
-            background: linear-gradient(135deg, #a855f7 0%, #9333ea 100%);
+            background: linear-gradient(135deg, #17191C 0%, #2a2d31 100%);
             color: white;
             border: none;
             border-radius: 8px;
@@ -88,9 +88,9 @@
         }
 
         .btn-ask:hover:not(:disabled) {
-            background: linear-gradient(135deg, #9333ea 0%, #7c3aed 100%);
+            background: linear-gradient(135deg, #2a2d31 0%, #17191C 100%);
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(168, 85, 247, 0.4);
+            box-shadow: 0 8px 25px rgba(146, 157, 167, 0.5);
         }
 
         .btn-ask:disabled {
@@ -105,7 +105,7 @@
         }
 
         .examples-title {
-            color: #7c3aed;
+            color: #17191C;
             font-weight: bold;
             margin-bottom: 10px;
             font-size: 0.95em;
@@ -115,19 +115,19 @@
             display: inline-block;
             padding: 8px 15px;
             margin: 5px;
-            background: #faf5ff;
-            border: 2px solid #c084fc;
+            background: #f5f7f9;
+            border: 2px solid #929DA7;
             border-radius: 20px;
-            color: #7c3aed;
+            color: #17191C;
             font-size: 0.9em;
             cursor: pointer;
             transition: all 0.3s;
         }
 
         .example-btn:hover {
-            background: #a855f7;
+            background: #929DA7;
             color: white;
-            border-color: #a855f7;
+            border-color: #929DA7;
             transform: translateY(-1px);
         }
 
@@ -137,13 +137,13 @@
             padding: 30px;
             background: white;
             border-radius: 15px;
-            border: 3px solid #a855f7;
-            box-shadow: 0 10px 30px rgba(168, 85, 247, 0.15);
+            border: 3px solid #929DA7;
+            box-shadow: 0 10px 30px rgba(146, 157, 167, 0.2);
         }
 
         .spinner {
-            border: 4px solid #e9d5ff;
-            border-top: 4px solid #a855f7;
+            border: 4px solid #e8ebed;
+            border-top: 4px solid #17191C;
             border-radius: 50%;
             width: 50px;
             height: 50px;
@@ -157,20 +157,20 @@
         }
 
         .loading-text {
-            color: #7c3aed;
+            color: #17191C;
             font-weight: bold;
             font-size: 1.1em;
         }
 
         .error-box {
             display: none;
-            background: #fef3c7;
-            border: 3px solid #f59e0b;
+            background: #fee;
+            border: 3px solid #dc3545;
             border-radius: 10px;
             padding: 20px;
             margin-bottom: 20px;
-            color: #92400e;
-            box-shadow: 0 5px 15px rgba(245, 158, 11, 0.15);
+            color: #721c24;
+            box-shadow: 0 5px 15px rgba(220, 53, 69, 0.15);
         }
 
         .result-box {
@@ -178,8 +178,8 @@
             background: white;
             border-radius: 15px;
             padding: 30px;
-            border: 3px solid #a855f7;
-            box-shadow: 0 10px 30px rgba(168, 85, 247, 0.15);
+            border: 3px solid #929DA7;
+            box-shadow: 0 10px 30px rgba(146, 157, 167, 0.2);
             animation: fadeIn 0.5s;
         }
 
@@ -191,11 +191,11 @@
         .answer-section {
             margin-bottom: 25px;
             padding-bottom: 25px;
-            border-bottom: 2px solid #e9d5ff;
+            border-bottom: 2px solid #e8ebed;
         }
 
         .section-title {
-            color: #7c3aed;
+            color: #17191C;
             font-size: 1.3em;
             font-weight: bold;
             margin-bottom: 15px;
@@ -234,24 +234,24 @@
         }
 
         .source-item {
-            background: #faf5ff;
+            background: #f5f7f9;
             padding: 12px;
             margin: 8px 0;
             border-radius: 8px;
-            border-left: 4px solid #a855f7;
-            color: #6b21a8;
+            border-left: 4px solid #929DA7;
+            color: #17191C;
         }
 
         .sql-code {
-            background: #f3e8ff;
-            color: #6b21a8;
+            background: #17191C;
+            color: #e8ebed;
             padding: 20px;
             border-radius: 10px;
             overflow-x: auto;
             font-family: 'Courier New', monospace;
             font-size: 0.95em;
             line-height: 1.6;
-            border: 2px solid #c084fc;
+            border: 2px solid #929DA7;
         }
 
         @media (max-width: 768px) {
