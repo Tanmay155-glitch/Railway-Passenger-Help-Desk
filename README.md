@@ -13,16 +13,16 @@ Build a passenger help desk assistant for Indian Railways. Your team writes one 
 ```
 README.md                                            this file
 SOURCES.md                                           where each document and the timetable came from
-documents/indianrail_refund_rules_2015.html          refund rules from 12.11.2015: table of old vs revised charges
-documents/irctc_refund_rules_jan2026.pdf             IRCTC refund and TDR rules (updated Jan 2026), 11 pages
-documents/rb_cc10_2024_advance_reservation.pdf       Railway Board circular 10/2024: booking limit 120 to 60 days (scanned)
-documents/rb_cc08_2025_tatkal.pdf                    Railway Board circular 08/2025: Aadhaar for Tatkal (Hindi pages scanned)
-documents/rb_cc10_2025_reservation_charts.pdf        Railway Board circular 10/2025: when first charts are made (scanned)
-documents/rb_cc08_2026_vande_bharat_sleeper_refund.pdf  circular 08/2026 + gazette G.S.R. 41(E): Vande Bharat Sleeper refunds
-documents/pib_2026-03-24_reform_express.html         PIB press release of 24 Mar 2026: new cancellation windows and more
-database/rail_timetable.db                           SQLite timetable (2016 snapshot): stations, trains, schedules
-database/schema.md                                   every table and column, and the data's quirks
-questions/sample_questions.json                      10 practice questions with model answers and sources
+data/documents/indianrail_refund_rules_2015.html          refund rules from 12.11.2015: table of old vs revised charges
+data/documents/irctc_refund_rules_jan2026.pdf             IRCTC refund and TDR rules (updated Jan 2026), 11 pages
+data/documents/rb_cc10_2024_advance_reservation.pdf       Railway Board circular 10/2024: booking limit 120 to 60 days (scanned)
+data/documents/rb_cc08_2025_tatkal.pdf                    Railway Board circular 08/2025: Aadhaar for Tatkal (Hindi pages scanned)
+data/documents/rb_cc10_2025_reservation_charts.pdf        Railway Board circular 10/2025: when first charts are made (scanned)
+data/documents/rb_cc08_2026_vande_bharat_sleeper_refund.pdf  circular 08/2026 + gazette G.S.R. 41(E): Vande Bharat Sleeper refunds
+data/documents/pib_2026-03-24_reform_express.html         PIB press release of 24 Mar 2026: new cancellation windows and more
+data/database/rail_timetable.db                           SQLite timetable (2016 snapshot): stations, trains, schedules
+data/database/schema.md                                   every table and column, and the data's quirks
+data/questions/sample_questions.json                      10 practice questions with model answers and sources
 ```
 
 ## The database in one minute
