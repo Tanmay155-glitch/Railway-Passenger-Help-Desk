@@ -29,7 +29,7 @@ class Config:
     
     # LLM parameters
     GEMINI_API_KEY: str = os.getenv("GEMINI_API_KEY", "")
-    GEMINI_MODEL: str = os.getenv("GEMINI_MODEL", "gemini-1.5-flash-latest")
+    GEMINI_MODEL: str = os.getenv("GEMINI_MODEL", "gemini-3.5-flash-lite")
     TEMPERATURE: float = 0.0
     TIMEOUT_SECONDS: int = 30
     MAX_RETRIES: int = 3

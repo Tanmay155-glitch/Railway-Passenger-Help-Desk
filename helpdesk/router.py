@@ -6,7 +6,7 @@ Routes questions to appropriate handlers: docs, db, both, or refuse.
 import json
 import logging
 import re
-from typing import Tuple
+from typing import Tuple, Optional
 
 from helpdesk.llm import GeminiClient
 
