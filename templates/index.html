@@ -357,13 +357,17 @@
             document.getElementById('errorBox').style.display = 'none';
             document.getElementById('askBtn').disabled = true;
 
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 60000);
+
             try {
                 const response = await fetch('/ask', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ question })
+                    body: JSON.stringify({ question }),
+                    signal: controller.signal
                 });
 
                 const result = await response.json();
@@ -374,8 +378,13 @@
                     showError(result.error || 'An error occurred');
                 }
             } catch (error) {
-                showError('Network error: ' + error.message);
+                if (error.name === 'AbortError') {
+                    showError('Request timed out after 60 seconds. Check if python app.py is running.');
+                } else {
+                    showError('Network error: ' + error.message);
+                }
             } finally {
+                clearTimeout(timeoutId);
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('askBtn').disabled = false;
             }

@@ -5,7 +5,7 @@ Generates grounded answers with source citations from retrieved chunks.
 
 import json
 import logging
-from typing import List, Dict, Tuple
+from typing import List, Dict, Tuple, Optional
 from datetime import datetime
 
 from helpdesk.llm import GeminiClient

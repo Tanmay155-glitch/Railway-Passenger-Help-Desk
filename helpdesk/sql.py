@@ -4,7 +4,7 @@ Generates and executes safe SQL queries for timetable questions.
 """
 
 import logging
-from typing import Tuple, Optional
+from typing import Tuple, Optional, Dict, List
 from pathlib import Path
 
 from helpdesk.config import config, find_data_pack

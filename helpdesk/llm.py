@@ -129,6 +129,15 @@ class GeminiClient:
         max_retries = config.MAX_RETRIES
         base_delay = 2.0
         
+        # Fallback candidate models
+        models_to_try = [self.model_name]
+        for fallback in ["gemini-3.5-flash-lite", "gemini-3.5-flash", "gemini-3.8-flash"]:
+            if fallback not in models_to_try:
+                models_to_try.append(fallback)
+
+        current_model_idx = 0
+        current_model = models_to_try[current_model_idx]
+
         for attempt in range(max_retries):
             try:
                 # Rate limiting
@@ -148,7 +157,7 @@ class GeminiClient:
                 
                 # Generate using new SDK
                 response = self.client.models.generate_content(
-                    model=self.model_name,
+                    model=current_model,
                     contents=prompt,
                     config=gen_config
                 )
@@ -163,6 +172,13 @@ class GeminiClient:
             except Exception as e:
                 error_str = str(e).lower()
                 
+                # If 503 (high demand) or 404 (not found), try fallback model
+                if ("503" in error_str or "404" in error_str or "unavailable" in error_str) and current_model_idx < len(models_to_try) - 1:
+                    current_model_idx += 1
+                    current_model = models_to_try[current_model_idx]
+                    logger.warning(f"Model failed with {e}. Switching to fallback model: {current_model}")
+                    continue
+
                 # Check if we should retry
                 should_retry = (
                     "429" in error_str or  # Rate limit
@@ -172,11 +188,10 @@ class GeminiClient:
                 )
                 
                 if not should_retry or attempt == max_retries - 1:
-                    # Model not found - give helpful error
                     if "404" in error_str or "not found" in error_str:
                         logger.error(
-                            f"Model {self.model_name} not found. "
-                            f"Set GEMINI_MODEL in .env to a valid model name like 'gemini-2.5-flash'."
+                            f"Model {current_model} not found. "
+                            f"Set GEMINI_MODEL in .env to a valid model name like 'gemini-3.5-flash-lite'."
                         )
                     raise
                 
