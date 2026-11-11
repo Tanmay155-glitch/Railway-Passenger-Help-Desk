@@ -1,0 +1,494 @@
+[
+  {
+    "id": "Q001",
+    "question": "What is the cancellation charge if I cancel my ticket 3 days before departure?",
+    "answer": "If you cancel a confirmed ticket more than 48 hours in advance of the scheduled departure, flat cancellation charges per passenger apply based on your class of ticket (e.g., Rs.240 plus GST for AC First/Executive Class down to Rs.60 for Second Class). However, if your journey is on a Vande Bharat Sleeper Express or Amrit Bharat II Express, cancelling 3 days (more than 72 hours) in advance incurs a cancellation charge of 25% of the fare.",
+    "sources": [
+      {
+        "doc": "irctc_refund_rules_jan2026.pdf",
+        "page": 1
+      },
+      {
+        "doc": "irctc_refund_rules_jan2026.pdf",
+        "page": 2
+      }
+    ],
+    "sql": null,
+    "dont_know": false
+  },
+  {
+    "id": "Q002",
+    "question": "What is the cancellation charge for Tatkal tickets?",
+    "answer": "No refund of fare is admissible on confirmed Tatkal tickets. For RAC or waitlisted Tatkal tickets, refunds are granted for unused cancellation charges in accordance with the rules for cancellation charges for RAC or waitlisted tickets.",
+    "sources": [
+      {
+        "doc": "irctc_refund_rules_jan2026.pdf",
+        "page": 6
+      }
+    ],
+    "sql": null,
+    "dont_know": false
+  },
+  {
+    "id": "Q003",
+    "question": "If I cancel my ticket 10 hours before the train leaves, how much refund will I get?",
+    "answer": "'I cannot answer this question as it pertains to railway refund rules and policies which are not stored in the database.': I cannot answer this question as it pertains to railway refund rules and policies which are not stored in the database. \nNote: This data is from a 2016 timetable snapshot.",
+    "sources": [],
+    "sql": "SELECT 'I cannot answer this question as it pertains to railway refund rules and policies which are not stored in the database.'",
+    "dont_know": false
+  },
+  {
+    "id": "Q004",
+    "question": "What percentage of refund do I get if I cancel 25 hours before departure?",
+    "answer": "I couldn't find information in either the documents or the timetable database for this question.",
+    "sources": [],
+    "sql": null,
+    "dont_know": true
+  },
+  {
+    "id": "Q005",
+    "question": "Which trains run from Delhi to Mumbai?",
+    "answer": "Query execution failed: near \";\": syntax error",
+    "sources": [],
+    "sql": "SELECT DISTINCT t.* \nFROM trains t \nJOIN stops s1 ON t.number = s1.train_number \nJOIN stops s2 ON t.number = s2.train_number \nWHERE s1.station_code IN ('ANDI', 'DAZ', 'DEC', 'DEE', 'DKZ') \n  AND s2.station_code IN ('BCT', 'BDTS', 'CHG', 'CRD', 'CSTM') \n  AND s1.stop_sequence < s2.stop_sequence;",
+    "dont_know": true
+  },
+  {
+    "id": "Q006",
+    "question": "What time does train 12002 depart from Delhi?",
+    "answer": "Query execution failed: near \";\": syntax error",
+    "sources": [],
+    "sql": "SELECT s.departure FROM stops s WHERE s.train_number = '12002' AND s.station_code IN ('ANDI', 'DAZ', 'DEC', 'DEE', 'DKZ');",
+    "dont_know": true
+  },
+  {
+    "id": "Q007",
+    "question": "How many stops does train 12002 make between Delhi and Mumbai?",
+    "answer": "Query execution failed: near \";\": syntax error",
+    "sources": [],
+    "sql": "SELECT COUNT(*) \nFROM stops \nWHERE train_number = '12002' \n  AND station_code NOT IN ('ANDI', 'DAZ', 'DEC', 'DEE', 'DKZ', 'BCT', 'BDTS', 'CHG', 'CRD', 'CSTM');",
+    "dont_know": true
+  },
+  {
+    "id": "Q008",
+    "question": "Which trains go from Chennai to Bangalore in the evening?",
+    "answer": "Query execution failed: near \";\": syntax error",
+    "sources": [],
+    "sql": "SELECT DISTINCT t.*\nFROM trains t\nJOIN stops s1 ON t.number = s1.train_number\nJOIN stops s2 ON t.number = s2.train_number\nWHERE s1.station_code IN ('MAS', 'MPK', 'MPKT', 'MS', 'MSB')\n  AND s2.station_code IN ('BNC', 'BNCE', 'BXB', 'SBC')\n  AND s1.stop_sequence < s2.stop_sequence\n  AND s1.departure >= '16:00'\n  AND s1.departure <= '23:59';",
+    "dont_know": true
+  },
+  {
+    "id": "Q009",
+    "question": "How many days in advance can I book a train ticket?",
+    "answer": "I don't have enough information to answer this fully. The provided document chunks do not contain enough information to determine how many days in advance a train ticket can be booked.",
+    "sources": [],
+    "sql": null,
+    "dont_know": true
+  },
+  {
+    "id": "Q010",
+    "question": "What is the advance reservation period for general tickets?",
+    "answer": "I don't have enough information to answer this fully. I am sorry, but the provided document chunks do not contain information regarding the advance reservation period for general tickets.",
+    "sources": [],
+    "sql": null,
+    "dont_know": true
+  },
+  {
+    "id": "Q011",
+    "question": "When does Tatkal booking open?",
+    "answer": "Authorized ticketing agents are restricted from booking opening day Tatkal tickets during the first thirty minutes of the opening of Tatkal booking. Specifically, they are barred from booking opening day Tatkal tickets from 1000 hours to 1030 hours for air-conditioned classes, and from 1100 hours to 1130 hours for non-air-conditioned classes.",
+    "sources": [
+      {
+        "doc": "rb_cc08_2025_tatkal.pdf",
+        "page": 1
+      }
+    ],
+    "sql": null,
+    "dont_know": false
+  },
+  {
+    "id": "Q012",
+    "question": "Is Aadhaar mandatory for Tatkal booking?",
+    "answer": "Yes, Aadhaar authentication is mandatory for booking tickets under the Tatkal scheme. According to the railway guidelines, tickets under the Tatkal Scheme can be booked through the IRCTC website or app only by Aadhaar-authenticated users, supported by Aadhaar-based OTP verification.",
+    "sources": [
+      {
+        "doc": "rb_cc08_2025_tatkal.pdf",
+        "page": 1
+      }
+    ],
+    "sql": null,
+    "dont_know": false
+  },
+  {
+    "id": "Q013",
+    "question": "When is the reservation chart prepared?",
+    "answer": "I don't have enough information to answer this fully. The provided documents do not contain information explaining when the reservation chart is prepared. Therefore, the question cannot be answered using the supplied chunks.",
+    "sources": [],
+    "sql": null,
+    "dont_know": true
+  },
+  {
+    "id": "Q014",
+    "question": "How many hours before departure is the first chart prepared?",
+    "answer": "Reservation charts are now prepared 9 to 18 hours before the departure of the train, which is an increase from the earlier timing of 4 hours before departure. This change aligns with the revised ticket cancellation time windows of 72, 24, and 8 hours before departure.",
+    "sources": [],
+    "sql": null,
+    "dont_know": false
+  },
+  {
+    "id": "Q015",
+    "question": "What is Rule 25?",
+    "answer": "Rule 25 specifies the provisions for Amrit Bharat II Express, stating that its reserved tickets are governed by the same rules applicable to Vande Bharat Sleeper Express tickets. However, unreserved tickets for the Amrit Bharat II Express are governed by the provisions of rule 5 of these rules.",
+    "sources": [
+      {
+        "doc": "rb_cc08_2026_vande_bharat_sleeper_refund.pdf",
+        "page": 5
+      }
+    ],
+    "sql": null,
+    "dont_know": false
+  },
+  {
+    "id": "Q016",
+    "question": "What is the refund policy for Vande Bharat Sleeper trains?",
+    "answer": "For Vande Bharat Sleeper Express confirmed tickets, cancellation charges are 25% of the fare if presented more than 72 hours in advance, 50% between 72 hours and 8 hours before departure, and non-refundable if cancelled less than 8 hours before departure or if a TDR is not filed online within that timeframe. These specific rules override general guidelines, and no results were found for this train in the 2016 timetable database since it is a more recent addition.",
+    "sources": [
+      {
+        "doc": "rb_cc08_2026_vande_bharat_sleeper_refund.pdf",
+        "page": 5
+      }
+    ],
+    "sql": "SELECT t.number, t.name, tt.meaning FROM trains t JOIN train_types tt ON t.type_code = tt.type_code WHERE tt.meaning LIKE '%Vande Bharat Sleeper%'",
+    "dont_know": false
+  },
+  {
+    "id": "Q017",
+    "question": "Has the refund policy changed in 2026?",
+    "answer": "I cannot modify the database. I can only retrieve information from documents and timetables.",
+    "sources": [],
+    "sql": null,
+    "dont_know": true
+  },
+  {
+    "id": "Q018",
+    "question": "What is the distance between Delhi and Mumbai by train 12002?",
+    "answer": "distance_km: 701 \nNote: This data is from a 2016 timetable snapshot.",
+    "sources": [],
+    "sql": "SELECT distance_km FROM trains WHERE number = '12002'",
+    "dont_know": false
+  },
+  {
+    "id": "Q019",
+    "question": "How long does it take for train 12002 to reach from Delhi to Mumbai?",
+    "answer": "Query execution failed: near \";\": syntax error",
+    "sources": [],
+    "sql": "SELECT \n    (s2.day - s1.day) * 1440 + \n    (CAST(SUBSTR(s2.arrival, 1, 2) AS INTEGER) * 60 + CAST(SUBSTR(s2.arrival, 4, 2) AS INTEGER)) - \n    (CAST(SUBSTR(s1.departure, 1, 2) AS INTEGER) * 60 + CAST(SUBSTR(s1.departure, 4, 2) AS INTEGER)) AS duration_minutes\nFROM stops s1\nJOIN stops s2 ON s1.train_number = s2.train_number\nWHERE s1.train_number = '12002'\n  AND s1.station_code IN ('ANDI', 'DAZ', 'DEC', 'DEE', 'DKZ')\n  AND s2.station_code IN ('BCT', 'BDTS', 'CHG', 'CRD', 'CSTM')\n  AND s1.stop_sequence < s2.stop_sequence;",
+    "dont_know": true
+  },
+  {
+    "id": "Q020",
+    "question": "Which trains stop at New Delhi station?",
+    "answer": "Query execution failed: near \";\": syntax error",
+    "sources": [],
+    "sql": "SELECT t.number, t.name \nFROM trains t \nJOIN stops s ON t.number = s.train_number \nWHERE s.station_code = 'NDLS';",
+    "dont_know": true
+  },
+  {
+    "id": "Q021",
+    "question": "What is the refund for train 12002 if I cancel it 20 hours before departure?",
+    "answer": "Train 12002 (New Delhi-Bhopal Shatabdi Express) \nNote: This data is from a 2016 timetable snapshot.",
+    "sources": [],
+    "sql": "SELECT * FROM trains WHERE number = '12002'",
+    "dont_know": false
+  },
+  {
+    "id": "Q022",
+    "question": "How much does a ticket cost from Delhi to Mumbai?",
+    "answer": "I can only answer questions about railway rules and timetables from the 2016 data. I don't have information about fares, seat availability, PNR status, waitlist confirmation, or live running status. Is there something else I can help you with?",
+    "sources": [],
+    "sql": null,
+    "dont_know": true
+  },
+  {
+    "id": "Q023",
+    "question": "What is the PNR status of 1234567890?",
+    "answer": "I can only answer questions about railway rules and timetables from the 2016 data. I don't have information about fares, seat availability, PNR status, waitlist confirmation, or live running status. Is there something else I can help you with?",
+    "sources": [],
+    "sql": null,
+    "dont_know": true
+  },
+  {
+    "id": "Q024",
+    "question": "Is seat 45 available in train 12002?",
+    "answer": "Query execution failed: near \";\": syntax error",
+    "sources": [],
+    "sql": "SELECT \n    CASE \n        WHEN number IS NOT NULL THEN 'Seat availability data is not present in the database.'\n        ELSE 'Train not found.'\n    END AS result\nFROM trains \nWHERE number = '12002';",
+    "dont_know": true
+  },
+  {
+    "id": "Q025",
+    "question": "Will my waitlisted ticket get confirmed?",
+    "answer": "I can only answer questions about railway rules and timetables from the 2016 data. I don't have information about fares, seat availability, PNR status, waitlist confirmation, or live running status. Is there something else I can help you with?",
+    "sources": [],
+    "sql": null,
+    "dont_know": true
+  },
+  {
+    "id": "Q026",
+    "question": "Change the departure time of train 12002 to 10 AM",
+    "answer": "I cannot modify the database. I can only retrieve information from documents and timetables.",
+    "sources": [],
+    "sql": null,
+    "dont_know": true
+  },
+  {
+    "id": "Q027",
+    "question": "Delete all trains from the database",
+    "answer": "I cannot modify the database. I can only retrieve information from documents and timetables.",
+    "sources": [],
+    "sql": null,
+    "dont_know": true
+  },
+  {
+    "id": "Q028",
+    "question": "How do I file a TDR for refund?",
+    "answer": "For e-tickets, you can file an online TDR before or after chart preparation depending on the circumstances, such as when passengers do not travel on partially confirmed or RAC/waitlisted tickets, or when AC facilities fail. Authorized agents can file TDR online or by sending an email to IRCTC with the required details within the prescribed time limits. For i-tickets or counter tickets, you must obtain a TDR from the railway station and submit your claim with the original ticket and certificates to the designated IRCTC address in New Delhi.",
+    "sources": [
+      {
+        "doc": "irctc_refund_rules_jan2026.pdf",
+        "page": 10
+      },
+      {
+        "doc": "irctc_refund_rules_jan2026.pdf",
+        "page": 7
+      },
+      {
+        "doc": "irctc_refund_rules_jan2026.pdf",
+        "page": 3
+      },
+      {
+        "doc": "irctc_refund_rules_jan2026.pdf",
+        "page": 6
+      }
+    ],
+    "sql": null,
+    "dont_know": false
+  },
+  {
+    "id": "Q029",
+    "question": "What does circular CC08/2025 say about Tatkal?",
+    "answer": "Commercial Circular No. 08 of 2025 outlines modifications to the Tatkal scheme to ensure benefits reach common end users. Effective 01-07-2025, Tatkal tickets on the IRCTC website/app can only be booked by Aadhaar authenticated users, with Aadhaar-based OTP authentication becoming compulsory from 15-07-2025. Additionally, PRS counter and authorized agent bookings require system-generated OTP authentication by 15-07-2025. Furthermore, authorized ticketing agents are restricted from booking opening day Tatkal tickets during the first thirty minutes of opening (from 1000 hours to 1030 hours for AC classes and from 1100 hours to 1130 hours for non-AC classes).",
+    "sources": [
+      {
+        "doc": "rb_cc08_2025_tatkal.pdf",
+        "page": 1
+      }
+    ],
+    "sql": null,
+    "dont_know": false
+  },
+  {
+    "id": "Q030",
+    "question": "What is notification G.S.R. 41(E)?",
+    "answer": "Notification G.S.R. 41(E), dated 16.01.2026, was published by the Ministry of Railways (Railway Board) to make rules further amending the Railway Passengers (Cancellation of Ticket and Refund of Fare) Rules, 2015. These rules introduced rationalised refund provisions specifically for the Vande Bharat Sleeper Express and Amrit Bharat II Express, coming into force with effect from 16.01.2026.",
+    "sources": [
+      {
+        "doc": "rb_cc08_2026_vande_bharat_sleeper_refund.pdf",
+        "page": 1
+      },
+      {
+        "doc": "rb_cc08_2026_vande_bharat_sleeper_refund.pdf",
+        "page": 5
+      }
+    ],
+    "sql": null,
+    "dont_know": false
+  },
+  {
+    "id": "Q031",
+    "question": "Which trains from Delhi to Kanyakumari take more than 24 hours?",
+    "answer": "I found no results in the timetable database. Note: This is a 2016 snapshot, so recent trains may not be included.",
+    "sources": [],
+    "sql": "SELECT DISTINCT t.number, t.name \nFROM trains t\nJOIN stops s_from ON t.number = s_from.train_number\nJOIN stops s_to ON t.number = s_to.train_number\nWHERE s_from.station_code IN ('ANDI', 'DAZ', 'DEC', 'DEE', 'DKZ')\n  AND s_to.station_code = 'CAPE'\n  AND s_from.stop_sequence < s_to.stop_sequence\n  AND ((s_to.day - s_from.day) * 1440 + \n       (CAST(SUBSTR(s_to.arrival, 1, 2) AS INTEGER) * 60 + CAST(SUBSTR(s_to.arrival, 4, 2) AS INTEGER)) - \n       (CAST(SUBSTR(s_from.departure, 1, 2) AS INTEGER) * 60 + CAST(SUBSTR(s_from.departure, 4, 2) AS INTEGER))) > 1440",
+    "dont_know": false
+  },
+  {
+    "id": "Q032",
+    "question": "Can I get a refund after the chart is prepared?",
+    "answer": "Yes, refunds are available after the reservation chart is prepared, and recent reforms have made changes to the cancellation time windows from 48, 12, and 4 hours to 72, 24, and 8 hours before departure. Furthermore, the requirement of filing a Ticket Deposit Receipt (TDR) for e-tickets has been removed, and refunds will now be processed automatically upon cancellation. Note that for fully wait-listed e-tickets where passengers remain on the waiting list after chart preparation, names are dropped and the fare is refunded automatically to the account from which the booking took place after deducting clerkage.",
+    "sources": [],
+    "sql": null,
+    "dont_know": false
+  },
+  {
+    "id": "Q033",
+    "question": "How many railway stations are there in Chennai?",
+    "answer": "Query execution failed: near \";\": syntax error",
+    "sources": [],
+    "sql": "SELECT COUNT(*) FROM stations WHERE code IN ('MAS', 'MPK', 'MPKT', 'MS', 'MSB');",
+    "dont_know": true
+  },
+  {
+    "id": "Q034",
+    "question": "What types of trains are available?",
+    "answer": "I found 16 results in the timetable. \nNote: This data is from a 2016 timetable snapshot.",
+    "sources": [],
+    "sql": "SELECT DISTINCT tt.type_code, tt.meaning FROM train_types tt JOIN trains t ON tt.type_code = t.type_code",
+    "dont_know": false
+  },
+  {
+    "id": "Q035",
+    "question": "What is the minimum cancellation charge?",
+    "answer": "The minimum per passenger flat cancellation charges for confirmed tickets depend on the class of your ticket: Rs.240 plus GST for AC First/Executive Class, Rs.200 plus GST for First Class/AC 2 Tier, Rs.180 plus GST for AC Chair Car/AC 3Tier/AC 3 Economy, Rs.120 for Sleeper Class, and Rs.60 for Second Class.",
+    "sources": [
+      {
+        "doc": "irctc_refund_rules_jan2026.pdf",
+        "page": 1
+      }
+    ],
+    "sql": null,
+    "dont_know": false
+  },
+  {
+    "id": "Q036",
+    "question": "Can I change my boarding point after booking?",
+    "answer": "Yes, passengers can change their boarding station digitally up to 30 minutes before the departure of the train from its origin station. Under this provision, if you are unable to board from your original station, you can select the next convenient station and board the train without losing your confirmed seat. Previously, changes to the boarding point were restricted to the time before chart preparation.",
+    "sources": [],
+    "sql": null,
+    "dont_know": false
+  },
+  {
+    "id": "Q037",
+    "question": "What is a slip coach train?",
+    "answer": "I don't have enough information to answer this fully. I'm sorry, but the provided document chunks do not contain enough information to define or explain what a slip coach train is.",
+    "sources": [],
+    "sql": null,
+    "dont_know": true
+  },
+  {
+    "id": "Q038",
+    "question": "Which express trains run between Mumbai and Pune?",
+    "answer": "I found 20 results in the timetable. First few train numbers: 11007, 11009, 11011, 11019, 11023 \nNote: This data is from a 2016 timetable snapshot.",
+    "sources": [],
+    "sql": "SELECT DISTINCT t.*\nFROM trains t\nJOIN stops s1 ON t.number = s1.train_number\nJOIN stops s2 ON t.number = s2.train_number\nJOIN train_types tt ON t.type_code = tt.type_code\nWHERE s1.station_code IN ('BCT', 'BDTS', 'CHG', 'CRD', 'CSTM')\n  AND s2.station_code = 'PUNE'\n  AND s1.stop_sequence < s2.stop_sequence\n  AND (tt.meaning LIKE '%Express%' OR tt.meaning LIKE '%EXP%')",
+    "dont_know": false
+  },
+  {
+    "id": "Q039",
+    "question": "Do senior citizens get different refund rates?",
+    "answer": "I don't have enough information to answer this fully. The provided documents do not contain any information regarding refund rates or concessions for senior citizens.",
+    "sources": [],
+    "sql": null,
+    "dont_know": true
+  },
+  {
+    "id": "Q040",
+    "question": "Which trains are operated by Western Railway?",
+    "answer": "Query execution failed: near \";\": syntax error",
+    "sources": [],
+    "sql": "SELECT * FROM trains WHERE zone = 'WR';",
+    "dont_know": true
+  },
+  {
+    "id": "Q041",
+    "question": "In which cases do I get zero refund?",
+    "answer": "You will receive zero refund in several scenarios: if you change your boarding station within 24 hours of train departure under normal circumstances; if you hold a confirmed e-ticket and do not cancel it or file an online TDR up to four hours before the scheduled departure; if you hold an RAC e-ticket and do not cancel it or file an online TDR up to thirty minutes before the scheduled departure; if you file a TDR after thirty minutes before the scheduled departure for a partially confirmed, RAC, or wait-listed ticket where none of the passengers have travelled; if you file a TDR after the actual departure of the train when it is running more than three hours late; or if you try to cancel a confirmed or RAC ticket booked in Premium Special Trains when the train itself is not cancelled.",
+    "sources": [
+      {
+        "doc": "irctc_refund_rules_jan2026.pdf",
+        "page": 8
+      },
+      {
+        "doc": "irctc_refund_rules_jan2026.pdf",
+        "page": 7
+      },
+      {
+        "doc": "irctc_refund_rules_jan2026.pdf",
+        "page": 9
+      }
+    ],
+    "sql": null,
+    "dont_know": false
+  },
+  {
+    "id": "Q042",
+    "question": "Does train 12002 have AC First Class?",
+    "answer": "Query execution failed: near \";\": syntax error",
+    "sources": [],
+    "sql": "SELECT has_1a FROM trains WHERE number = '12002';",
+    "dont_know": true
+  },
+  {
+    "id": "Q043",
+    "question": "Which stations does train 12002 stop at between Delhi and Mumbai?",
+    "answer": "Query execution failed: near \";\": syntax error",
+    "sources": [],
+    "sql": "SELECT st.name \nFROM stops s \nJOIN stations st ON s.station_code = st.code \nWHERE s.train_number = '12002' \n  AND s.station_code NOT IN ('ANDI', 'DAZ', 'DEC', 'DEE', 'DKZ', 'BCT', 'BDTS', 'CHG', 'CRD', 'CSTM')\nORDER BY s.stop_sequence;",
+    "dont_know": true
+  },
+  {
+    "id": "Q044",
+    "question": "What is the return train for 12002?",
+    "answer": "return_train: 12001 \nNote: This data is from a 2016 timetable snapshot.",
+    "sources": [],
+    "sql": "SELECT return_train FROM trains WHERE number = '12002'",
+    "dont_know": false
+  },
+  {
+    "id": "Q045",
+    "question": "Within how many hours after departure can I claim refund?",
+    "answer": "The time limit to claim a refund via TDR depends on the specific situation: if a train is late by more than three hours, the TDR must be filed before the actual departure, whereas for issues like coach damage or lower class allocation, it can be filed up to three hours after departure at the boarding station. *(Note: This data is sourced from a 2016 timetable snapshot with the address Jalna, Maharashtra).*",
+    "sources": [
+      {
+        "doc": "irctc_refund_rules_jan2026.pdf",
+        "page": 8
+      },
+      {
+        "doc": "irctc_refund_rules_jan2026.pdf",
+        "page": 10
+      }
+    ],
+    "sql": "SELECT address FROM stations WHERE code = 'PTU'",
+    "dont_know": false
+  },
+  {
+    "id": "Q046",
+    "question": "How many trains run from Delhi to Jaipur daily?",
+    "answer": "Query execution failed: near \";\": syntax error",
+    "sources": [],
+    "sql": "SELECT count(DISTINCT t.number) \nFROM trains t\nJOIN stops s1 ON t.number = s1.train_number\nJOIN stops s2 ON t.number = s2.train_number\nWHERE s1.station_code IN ('ANDI', 'DAZ', 'DEC', 'DEE', 'DKZ')\n  AND s2.station_code = 'JP'\n  AND s1.stop_sequence < s2.stop_sequence\n  AND t.departure IS NOT NULL;",
+    "dont_know": true
+  },
+  {
+    "id": "Q047",
+    "question": "What is the fastest train from Delhi to Mumbai?",
+    "answer": "Train 12215 (Delhi Sarai Rohilla-Mumbai BandraT Garib Rath) \nNote: This data is from a 2016 timetable snapshot.",
+    "sources": [],
+    "sql": "SELECT t.number, t.name, \n  ((s2.day - s1.day) * 1440 + \n   (CAST(SUBSTR(s2.arrival, 1, 2) AS INTEGER) * 60 + CAST(SUBSTR(s2.arrival, 4, 2) AS INTEGER)) - \n   (CAST(SUBSTR(s1.departure, 1, 2) AS INTEGER) * 60 + CAST(SUBSTR(s1.departure, 4, 2) AS INTEGER))\n  ) AS travel_minutes\nFROM trains t\nJOIN stops s1 ON t.number = s1.train_number\nJOIN stops s2 ON t.number = s2.train_number\nWHERE s1.station_code IN ('ANDI', 'DAZ', 'DEC', 'DEE', 'DKZ')\n  AND s2.station_code IN ('BCT', 'BDTS', 'CHG', 'CRD', 'CSTM')\n  AND s1.stop_sequence < s2.stop_sequence\nORDER BY travel_minutes ASC\nLIMIT 1;",
+    "dont_know": false
+  },
+  {
+    "id": "Q048",
+    "question": "How is refund processed for online booked tickets?",
+    "answer": "Error generating answer: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 15, model: gemini-3.5-flash-lite, description: Generate content requests per minute limit exceeded on Free Tier. See https://aistudio.google.com/docs/rate-limits.\\nPlease retry in 49.124650407s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://aistudio.google.com/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'description': 'Generate content requests per minute limit exceeded on Free Tier. See https://aistudio.google.com/docs/rate-limits.', 'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerMinutePerProjectPerModel-FreeTier', 'quotaDimensions': {'model': 'gemini-3.5-flash-lite', 'location': 'global'}, 'quotaValue': '15'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '49s'}]}}",
+    "sources": [],
+    "sql": null,
+    "dont_know": true
+  },
+  {
+    "id": "Q049",
+    "question": "When was the refund policy last updated?",
+    "answer": "I cannot modify the database. I can only retrieve information from documents and timetables.",
+    "sources": [],
+    "sql": null,
+    "dont_know": true
+  },
+  {
+    "id": "Q050",
+    "question": "If I book a Tatkal ticket on train 12002 and cancel it 30 hours before departure, what refund will I get?",
+    "answer": "Under the latest rules from March 24, 2026, the earlier ticket cancellation time windows of 48, 12, and 4 hours before departure have been revised to 72, 24, and 8 hours before departure. Since you are cancelling 30 hours before departure, this falls within the new cancellation window, and refunds will now be processed automatically upon cancellation at no extra cost from passengers. This replaces the older rules from January 2026.",
+    "sources": [],
+    "sql": null,
+    "dont_know": false
+  }
+]

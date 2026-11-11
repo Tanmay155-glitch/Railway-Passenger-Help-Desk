@@ -1,0 +1,61 @@
+[
+  {
+    "id": "Q001",
+    "question": "What is the cancellation charge for Tatkal tickets?",
+    "answer": "No refund of fare is admissible on confirmed Tatkal tickets. For RAC or Waitlisted Tatkal tickets, refunds are granted subject to the deduction of clerkage charges as per the rules for cancellation of RAC or waitlisted tickets. Additionally, in the case of party or family Tatkal tickets issued for more than one passenger where some have confirmed reservations and others are on the waiting list, a full refund of fare less clerkage is admissible if the entire Tatkal ticket is surrendered for cancellation up to thirty minutes before the scheduled departure of the train.",
+    "sources": [
+      {
+        "doc": "irctc_refund_rules_jan2026.pdf",
+        "page": 7
+      },
+      {
+        "doc": "irctc_refund_rules_jan2026.pdf",
+        "page": 6
+      }
+    ],
+    "sql": null,
+    "dont_know": false
+  },
+  {
+    "id": "Q002",
+    "question": "Which trains go from Delhi to Mumbai?",
+    "answer": "Query execution failed: near \";\": syntax error",
+    "sources": [],
+    "sql": "SELECT DISTINCT t.number, t.name \nFROM trains t \nJOIN stops s1 ON t.number = s1.train_number \nJOIN stops s2 ON t.number = s2.train_number \nWHERE s1.station_code IN ('ANDI', 'DAZ', 'DEC', 'DEE', 'DKZ') \n  AND s2.station_code IN ('BCT', 'BDTS', 'CHG', 'CRD', 'CSTM') \n  AND s1.stop_sequence < s2.stop_sequence;",
+    "dont_know": true
+  },
+  {
+    "id": "Q003",
+    "question": "What is Rule 25?",
+    "answer": "Rule 25 specifies the provisions for Amrit Bharat II Express, stating that its reserved tickets are governed by the rules applicable to Vande Bharat Sleeper Express tickets. However, unreserved tickets for the Amrit Bharat II Express are governed by the provisions of rule 5 of these rules.",
+    "sources": [
+      {
+        "doc": "rb_cc08_2026_vande_bharat_sleeper_refund.pdf",
+        "page": 5
+      }
+    ],
+    "sql": null,
+    "dont_know": false
+  },
+  {
+    "id": "Q004",
+    "question": "How much does a ticket cost from Delhi to Mumbai?",
+    "answer": "I can only answer questions about railway rules and timetables from the 2016 data. I don't have information about fares, seat availability, PNR status, waitlist confirmation, or live running status. Is there something else I can help you with?",
+    "sources": [],
+    "sql": null,
+    "dont_know": true
+  },
+  {
+    "id": "Q005",
+    "question": "When is the reservation chart prepared?",
+    "answer": "I don't have enough information to answer this fully. The provided documents contain rules mentioning reservation charts, such as how confirmed reservations can be provided to RAC or waitlisted ticket holders up to the final preparation of charts, and how e-tickets can be cancelled online till the preparation of charts. However, the documents do not specify the exact time or when the reservation chart is actually prepared.",
+    "sources": [
+      {
+        "doc": "irctc_refund_rules_jan2026.pdf",
+        "page": 7
+      }
+    ],
+    "sql": null,
+    "dont_know": true
+  }
+]

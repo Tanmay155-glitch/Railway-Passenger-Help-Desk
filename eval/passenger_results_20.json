@@ -1,0 +1,191 @@
+[
+  {
+    "id": "Q01",
+    "question": "What is the cancellation charge for Tatkal tickets?",
+    "answer": "No refund of fare shall be admissible on confirmed Tatkal tickets. However, for RAC or waitlisted Tatkal tickets, grant of refund for unused cancellation charges applies as per the cancellation charges for RAC or waitlisted tickets. Additionally, in the case of party or family Tatkal tickets issued for more than one passenger where some have confirmed reservations and others are on the waitlist, a full refund of fare less clerkage is admissible if the entire Tatkal ticket is surrendered for cancellation up to thirty minutes before the scheduled departure of the train.",
+    "sources": [
+      {
+        "doc": "irctc_refund_rules_jan2026.pdf",
+        "page": 7
+      },
+      {
+        "doc": "irctc_refund_rules_jan2026.pdf",
+        "page": 6
+      }
+    ],
+    "sql": null,
+    "dont_know": false
+  },
+  {
+    "id": "Q02",
+    "question": "Which trains go from Delhi to Mumbai?",
+    "answer": "I found 3 results: 1. Train 12215 - Delhi Sarai Rohilla-Mumbai BandraT Garib Rath 2. Train 12138 - Punjab Mail 3. Train 19024 - Firozpur Mumbai Janata Express \nNote: This data is from a 2016 timetable snapshot.",
+    "sources": [],
+    "sql": "SELECT DISTINCT t.*\nFROM trains t\nJOIN stops s1 ON t.number = s1.train_number\nJOIN stops s2 ON t.number = s2.train_number\nWHERE s1.station_code IN ('ANDI', 'DAZ', 'DEC', 'DEE', 'DKZ')\n  AND s2.station_code IN ('BCT', 'BDTS', 'CHG', 'CRD', 'CSTM')\n  AND s1.stop_sequence < s2.stop_sequence;",
+    "dont_know": false
+  },
+  {
+    "id": "Q03",
+    "question": "If I cancel my ticket 30 hours before departure, what percentage refund will I get?",
+    "answer": "refund_percentage: 50 \nNote: This data is from a 2016 timetable snapshot.",
+    "sources": [],
+    "sql": "SELECT \n    CASE \n        WHEN 30 >= 48 THEN 100\n        WHEN 30 >= 12 THEN 50\n        WHEN 30 >= 4 THEN 25\n        ELSE 0\n    END AS refund_percentage",
+    "dont_know": false
+  },
+  {
+    "id": "Q04",
+    "question": "How many days in advance can I book a train ticket?",
+    "answer": "I don't have enough information to answer this fully. The provided document chunks do not contain enough information to determine how many days in advance a train ticket can be booked.",
+    "sources": [],
+    "sql": null,
+    "dont_know": true
+  },
+  {
+    "id": "Q05",
+    "question": "When does Tatkal booking open?",
+    "answer": "Authorized ticketing agents are restricted from booking opening day Tatkal tickets during the first thirty minutes of the opening of Tatkal booking for both AC and non-AC classes. Specifically, they are not allowed to book opening day Tatkal tickets from 1000 hours to 1030 hours for air-conditioned classes and from 1100 hours to 1130 hours for non-air-conditioned classes.",
+    "sources": [
+      {
+        "doc": "rb_cc08_2025_tatkal.pdf",
+        "page": 1
+      }
+    ],
+    "sql": null,
+    "dont_know": false
+  },
+  {
+    "id": "Q06",
+    "question": "Is Aadhaar mandatory for Tatkal booking?",
+    "answer": "According to document records, Aadhaar authentication and OTP verification are mandatory for booking Tatkal tickets through the IRCTC website or app to curb misuse. However, the 2016 timetable database schema contains only train routes, schedules, and stations, lacking any information regarding booking policies or Aadhaar requirements. Therefore, while policy documents confirm its necessity, the timetable data does not provide details on this rule.",
+    "sources": [],
+    "sql": "SELECT 'I am sorry, but the database schema provided only contains information about train routes, schedules, and stations, and does not contain any information about booking policies, rules, or whether Aadhaar is mandatory for Tatkal booking.';",
+    "dont_know": false
+  },
+  {
+    "id": "Q07",
+    "question": "What is Rule 25?",
+    "answer": "Rule 25 specifies that reserved tickets for Amrit Bharat II Express are governed by the same rules that apply to reserved tickets for the Vande Bharat Sleeper Express. However, unreserved tickets for Amrit Bharat II Express are governed separately by the provisions of rule 5.",
+    "sources": [
+      {
+        "doc": "rb_cc08_2026_vande_bharat_sleeper_refund.pdf",
+        "page": 5
+      }
+    ],
+    "sql": null,
+    "dont_know": false
+  },
+  {
+    "id": "Q08",
+    "question": "What is the refund policy for Vande Bharat Sleeper trains?",
+    "answer": "For Vande Bharat Sleeper Express confirmed tickets, the cancellation charges depend on the timing of cancellation: twenty five per cent of the fare if cancelled more than seventy-two hours in advance, fifty per cent of the fare if cancelled between seventy-two hours and up to eight hours before the scheduled departure, and no refund if cancelled in less than eight hours. Additionally, no refund is admissible if the ticket is not cancelled or TDR is not filed online up to eight hours before the scheduled departure of the train. Note that while both document sources cover these rules dated January 19, 2026, the Railway Board document (rb_cc08_2026_vande_bharat_sleeper_refund.pdf) takes precedence.",
+    "sources": [],
+    "sql": null,
+    "dont_know": false
+  },
+  {
+    "id": "Q09",
+    "question": "What time does train 12002 depart?",
+    "answer": "departure: 06:15 \nNote: This data is from a 2016 timetable snapshot.",
+    "sources": [],
+    "sql": "SELECT departure FROM trains WHERE number = '12002';",
+    "dont_know": false
+  },
+  {
+    "id": "Q10",
+    "question": "How many stops does train 12002 make?",
+    "answer": "The count is 7 \nNote: This data is from a 2016 timetable snapshot.",
+    "sources": [],
+    "sql": "SELECT COUNT(*) FROM stops WHERE train_number = '12002'",
+    "dont_know": false
+  },
+  {
+    "id": "Q11",
+    "question": "Which trains go from Chennai to Bangalore?",
+    "answer": "I found 12 results in the timetable. First few train numbers: 12027, 12296, 12510, 12577, 12607 \nNote: This data is from a 2016 timetable snapshot.",
+    "sources": [],
+    "sql": "SELECT DISTINCT t.*\nFROM trains t\nJOIN stops s1 ON t.number = s1.train_number\nJOIN stops s2 ON t.number = s2.train_number\nWHERE s1.station_code IN ('MAS', 'MPK', 'MPKT', 'MS', 'MSB')\n  AND s2.station_code IN ('BNC', 'BNCE', 'BXB', 'SBC')\n  AND s1.stop_sequence < s2.stop_sequence",
+    "dont_know": false
+  },
+  {
+    "id": "Q12",
+    "question": "How much does a ticket cost from Delhi to Mumbai?",
+    "answer": "I can only answer questions about railway rules and timetables from the 2016 data. I don't have information about fares, seat availability, PNR status, waitlist confirmation, or live running status. Is there something else I can help you with?",
+    "sources": [],
+    "sql": null,
+    "dont_know": true
+  },
+  {
+    "id": "Q13",
+    "question": "What is my PNR status?",
+    "answer": "I can only answer questions about railway rules and timetables from the 2016 data. I don't have information about fares, seat availability, PNR status, waitlist confirmation, or live running status. Is there something else I can help you with?",
+    "sources": [],
+    "sql": null,
+    "dont_know": true
+  },
+  {
+    "id": "Q14",
+    "question": "Will my waitlisted ticket get confirmed?",
+    "answer": "I can only answer questions about railway rules and timetables from the 2016 data. I don't have information about fares, seat availability, PNR status, waitlist confirmation, or live running status. Is there something else I can help you with?",
+    "sources": [],
+    "sql": null,
+    "dont_know": true
+  },
+  {
+    "id": "Q15",
+    "question": "Change the departure time of train 12002",
+    "answer": "I cannot modify the database. I can only retrieve information from documents and timetables.",
+    "sources": [],
+    "sql": null,
+    "dont_know": true
+  },
+  {
+    "id": "Q16",
+    "question": "Can I change my boarding point after booking?",
+    "answer": "Yes, passengers can change their boarding station digitally up to 30 minutes before the departure of the train from its origin station. Under this provision, if you are unable to board from your original station, you can select the next convenient station and board the train without losing your confirmed seat. Previously, passengers could only change the boarding point before chart preparation.",
+    "sources": [],
+    "sql": null,
+    "dont_know": false
+  },
+  {
+    "id": "Q17",
+    "question": "What does circular CC08/2025 say about Tatkal?",
+    "answer": "Commercial Circular No. 08 of 2025 outlines modifications to the Tatkal scheme to ensure benefits reach common end users. Effective July 1, 2025, Tatkal tickets on the IRCTC website/app can only be booked by Aadhaar authenticated users, with Aadhaar-based OTP authentication becoming compulsory from July 15, 2025. For computerized PRS counters and authorized agents, a system-generated OTP sent to the user's mobile number is required by July 15, 2025. Additionally, authorized ticketing agents are restricted from booking opening-day Tatkal tickets during the first thirty minutes of the booking window, specifically from 10:00 hours to 10:30 hours for AC classes and from 11:00 hours to 11:30 hours for non-AC classes.",
+    "sources": [
+      {
+        "doc": "rb_cc08_2025_tatkal.pdf",
+        "page": 1
+      }
+    ],
+    "sql": null,
+    "dont_know": false
+  },
+  {
+    "id": "Q18",
+    "question": "Does train 12002 have AC First Class?",
+    "answer": "has_1a: 1 \nNote: This data is from a 2016 timetable snapshot.",
+    "sources": [],
+    "sql": "SELECT has_1a FROM trains WHERE number = '12002'",
+    "dont_know": false
+  },
+  {
+    "id": "Q19",
+    "question": "What is the return train for 12002?",
+    "answer": "return_train: 12001 \nNote: This data is from a 2016 timetable snapshot.",
+    "sources": [],
+    "sql": "SELECT return_train FROM trains WHERE number = '12002'",
+    "dont_know": false
+  },
+  {
+    "id": "Q20",
+    "question": "If I cancel a confirmed ticket 10 hours before departure, how much refund do I get?",
+    "answer": "For standard AC classes, cancelling a confirmed ticket between 48 hours and up to 12 hours before departure incurs a cancellation charge of 25% of the fare plus applicable GST. However, if you are cancelling a confirmed ticket for the Vande Bharat Sleeper Express between 72 hours and up to 8 hours before departure, the charge is 50% of the fare. Please note that specific refund policies for cancellations made exactly 10 hours before departure are not available in the 2016 timetable database schema.",
+    "sources": [
+      {
+        "doc": "irctc_refund_rules_jan2026.pdf",
+        "page": 2
+      }
+    ],
+    "sql": "SELECT 'Information about refund policies for ticket cancellations 10 hours before departure is not available in the database schema.' AS answer;",
+    "dont_know": false
+  }
+]

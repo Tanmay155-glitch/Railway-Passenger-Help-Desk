@@ -409,7 +409,7 @@ def apply_date_awareness(results: List[Dict]) -> List[Dict]:
     return enhanced
 
 
-def search(question: str, k: int = None) -> List[Dict]:
+def search(question: str, k: int = None, include_neighbors: bool = True) -> tuple[List[Dict], List[Dict]]:
     """
     Main search function using hybrid retrieval.
     
@@ -419,9 +419,12 @@ def search(question: str, k: int = None) -> List[Dict]:
     Args:
         question: Query text
         k: Number of results to return (default from config)
+        include_neighbors: Whether to return neighboring chunks for context
         
     Returns:
-        List of top-k chunks with scores and metadata
+        Tuple of (main_results, neighbor_chunks) where:
+        - main_results: List of top-k chunks with scores and metadata
+        - neighbor_chunks: List of neighboring chunks for context (empty if include_neighbors=False)
     """
     if k is None:
         k = config.RETRIEVAL_K
@@ -455,12 +458,14 @@ def search(question: str, k: int = None) -> List[Dict]:
     results = results[:k]
     
     # Add neighboring chunks for context
-    main_chunk_ids = [r.get('chunk_id', '') for r in results if r.get('chunk_id')]
-    neighbors = get_neighboring_chunks(main_chunk_ids)
-    
-    # Return main results + neighbors as metadata
-    for result in results:
-        result['has_neighbors'] = len(neighbors) > 0
+    neighbors = []
+    if include_neighbors:
+        main_chunk_ids = [r.get('chunk_id', '') for r in results if r.get('chunk_id')]
+        neighbors = get_neighboring_chunks(main_chunk_ids)
+        
+        # Mark results as having neighbors
+        for result in results:
+            result['has_neighbors'] = len(neighbors) > 0
     
     logger.info(f"Returning {len(results)} results (+ {len(neighbors)} neighbors)")
     

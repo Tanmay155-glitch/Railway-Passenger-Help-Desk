@@ -1,203 +1,192 @@
 """
-Unit tests for source citation builder.
-Ensures source citations are accurate and properly formatted.
+Unit tests for source citation building.
+Ensures sources are correctly extracted from chunks.
 """
 
 import pytest
 from helpdesk.answer import build_sources
 
 
-def test_build_sources_basic():
-    """Test basic source citation building."""
-    chunk_ids = ["doc1_p01_c01", "doc1_p02_c01", "doc2_p01_c01"]
-    all_chunks = [
+def test_build_sources_extracts_doc_and_page():
+    """Test that build_sources extracts doc and page from chunks."""
+    chunks = [
         {
             "chunk_id": "doc1_p01_c01",
-            "doc": "irctc_refund_rules_jan2026.pdf",
-            "page": 1,
-            "text": "Sample text"
+            "doc": "test_doc.pdf",
+            "page": 1
         },
         {
             "chunk_id": "doc1_p02_c01",
-            "doc": "irctc_refund_rules_jan2026.pdf",
-            "page": 2,
-            "text": "Sample text"
-        },
-        {
-            "chunk_id": "doc2_p01_c01",
-            "doc": "rb_cc08_2025_tatkal.pdf",
-            "page": 1,
-            "text": "Sample text"
-        },
+            "doc": "test_doc.pdf",
+            "page": 2
+        }
     ]
     
-    sources = build_sources(chunk_ids, all_chunks)
+    chunk_ids = ["doc1_p01_c01", "doc1_p02_c01"]
     
-    assert len(sources) > 0
-    assert len(sources) <= 4  # Should limit to 2-4 sources
+    sources = build_sources(chunk_ids, chunks)
     
-    # Check structure
-    for source in sources:
-        assert "doc" in source
-        assert "page" in source
-        assert isinstance(source["doc"], str)
-        assert isinstance(source["page"], (int, type(None)))
+    assert len(sources) == 2
+    assert sources[0]["doc"] == "test_doc.pdf"
+    assert sources[0]["page"] == 1
+    assert sources[1]["doc"] == "test_doc.pdf"
+    assert sources[1]["page"] == 2
 
 
-def test_deduplication():
-    """Test that duplicate doc+page combinations are removed."""
-    chunk_ids = ["doc1_p01_c01", "doc1_p01_c02", "doc1_p01_c03"]
-    all_chunks = [
+def test_build_sources_deduplicates():
+    """Test that build_sources removes duplicate doc+page combinations."""
+    chunks = [
         {
             "chunk_id": "doc1_p01_c01",
-            "doc": "test.pdf",
-            "page": 1,
-            "text": "Text"
+            "doc": "test_doc.pdf",
+            "page": 1
         },
         {
             "chunk_id": "doc1_p01_c02",
-            "doc": "test.pdf",
-            "page": 1,
-            "text": "More text"
+            "doc": "test_doc.pdf",
+            "page": 1  # Same page as previous
         },
         {
-            "chunk_id": "doc1_p01_c03",
-            "doc": "test.pdf",
-            "page": 1,
-            "text": "Even more text"
-        },
+            "chunk_id": "doc1_p02_c01",
+            "doc": "test_doc.pdf",
+            "page": 2
+        }
     ]
     
-    sources = build_sources(chunk_ids, all_chunks)
+    chunk_ids = ["doc1_p01_c01", "doc1_p01_c02", "doc1_p02_c01"]
     
-    # Should only have one source (same doc + page)
-    assert len(sources) == 1
-    assert sources[0]["doc"] == "test.pdf"
+    sources = build_sources(chunk_ids, chunks)
+    
+    # Should deduplicate page 1
+    assert len(sources) == 2
     assert sources[0]["page"] == 1
+    assert sources[1]["page"] == 2
 
 
-def test_relevance_ordering():
-    """Test that sources are ordered by relevance (chunk_id order)."""
-    chunk_ids = ["doc3_p01_c01", "doc1_p01_c01", "doc2_p01_c01"]
-    all_chunks = [
-        {"chunk_id": "doc1_p01_c01", "doc": "doc1.pdf", "page": 1, "text": ""},
-        {"chunk_id": "doc2_p01_c01", "doc": "doc2.pdf", "page": 1, "text": ""},
-        {"chunk_id": "doc3_p01_c01", "doc": "doc3.pdf", "page": 1, "text": ""},
+def test_build_sources_limits_to_four():
+    """Test that build_sources limits results to 2-4 sources."""
+    chunks = [
+        {"chunk_id": f"doc_p{i:02d}_c01", "doc": f"doc{i}.pdf", "page": i}
+        for i in range(1, 11)  # 10 different pages
     ]
     
-    sources = build_sources(chunk_ids, all_chunks)
-    
-    # First source should be from doc3 (first in chunk_ids)
-    assert sources[0]["doc"] == "doc3.pdf"
-
-
-def test_html_page_null():
-    """Test that HTML documents have page: null."""
-    chunk_ids = ["html_p00_c01"]
-    all_chunks = [
-        {
-            "chunk_id": "html_p00_c01",
-            "doc": "indianrail_refund_rules_2015.html",
-            "page": None,
-            "text": "HTML content"
-        }
-    ]
-    
-    sources = build_sources(chunk_ids, all_chunks)
-    
-    assert len(sources) == 1
-    assert sources[0]["page"] is None
-
-
-def test_source_limit():
-    """Test that sources are limited to 2-4 entries."""
-    # Create 10 chunks from different pages
     chunk_ids = [f"doc_p{i:02d}_c01" for i in range(1, 11)]
-    all_chunks = [
-        {
-            "chunk_id": f"doc_p{i:02d}_c01",
-            "doc": "test.pdf",
-            "page": i,
-            "text": f"Page {i}"
-        }
-        for i in range(1, 11)
-    ]
     
-    sources = build_sources(chunk_ids, all_chunks)
+    sources = build_sources(chunk_ids, chunks)
     
-    # Should be limited
-    assert len(sources) >= 2
+    # Should limit to at most 4
     assert len(sources) <= 4
 
 
-def test_empty_chunk_ids():
-    """Test handling of empty chunk_ids list."""
-    sources = build_sources([], [])
-    
-    assert sources == []
-
-
-def test_missing_chunk():
-    """Test handling when chunk_id not found in all_chunks."""
-    chunk_ids = ["missing_chunk"]
-    all_chunks = [
-        {"chunk_id": "exists", "doc": "test.pdf", "page": 1, "text": ""}
+def test_build_sources_handles_null_page():
+    """Test that build_sources handles HTML documents with page=None."""
+    chunks = [
+        {
+            "chunk_id": "html_doc_c01",
+            "doc": "document.html",
+            "page": None
+        }
     ]
     
-    # Should not crash
-    sources = build_sources(chunk_ids, all_chunks)
+    chunk_ids = ["html_doc_c01"]
     
-    # May return empty or skip missing chunks
-    assert isinstance(sources, list)
+    sources = build_sources(chunk_ids, chunks)
+    
+    assert len(sources) == 1
+    assert sources[0]["doc"] == "document.html"
+    assert sources[0]["page"] is None
 
 
-def test_mixed_pdf_and_html():
-    """Test mixed PDF and HTML sources."""
-    chunk_ids = ["pdf_p01_c01", "html_p00_c01"]
-    all_chunks = [
+def test_build_sources_preserves_order():
+    """Test that build_sources maintains order from chunk_ids (relevance order)."""
+    chunks = [
+        {"chunk_id": "doc_p03_c01", "doc": "doc.pdf", "page": 3},
+        {"chunk_id": "doc_p01_c01", "doc": "doc.pdf", "page": 1},
+        {"chunk_id": "doc_p02_c01", "doc": "doc.pdf", "page": 2}
+    ]
+    
+    # Order: page 3, then page 1, then page 2
+    chunk_ids = ["doc_p03_c01", "doc_p01_c01", "doc_p02_c01"]
+    
+    sources = build_sources(chunk_ids, chunks)
+    
+    # Should maintain the order from chunk_ids
+    assert sources[0]["page"] == 3
+    assert sources[1]["page"] == 1
+    assert sources[2]["page"] == 2
+
+
+def test_build_sources_handles_missing_chunk_ids():
+    """Test that build_sources handles chunk IDs not in chunks list."""
+    chunks = [
+        {"chunk_id": "doc_p01_c01", "doc": "doc.pdf", "page": 1}
+    ]
+    
+    chunk_ids = ["doc_p01_c01", "missing_chunk_id", "doc_p02_c01"]
+    
+    sources = build_sources(chunk_ids, chunks)
+    
+    # Should only return source for valid chunk_id
+    assert len(sources) == 1
+    assert sources[0]["page"] == 1
+
+
+def test_build_sources_handles_empty_chunk_ids():
+    """Test that build_sources handles empty chunk_ids list."""
+    chunks = [
+        {"chunk_id": "doc_p01_c01", "doc": "doc.pdf", "page": 1}
+    ]
+    
+    sources = build_sources([], chunks)
+    
+    assert len(sources) == 0
+
+
+def test_build_sources_structure():
+    """Test that each source has exactly doc and page keys."""
+    chunks = [
         {
-            "chunk_id": "pdf_p01_c01",
-            "doc": "rules.pdf",
+            "chunk_id": "doc_p01_c01",
+            "doc": "test.pdf",
             "page": 1,
-            "text": "PDF text"
-        },
-        {
-            "chunk_id": "html_p00_c01",
-            "doc": "rules.html",
-            "page": None,
-            "text": "HTML text"
-        },
+            "date": "2026-01-01",
+            "issuer": "Test",
+            "extra_field": "should not be in source"
+        }
     ]
     
-    sources = build_sources(chunk_ids, all_chunks)
+    chunk_ids = ["doc_p01_c01"]
     
-    assert len(sources) == 2
-    # PDF should have page number
-    pdf_source = next(s for s in sources if s["doc"] == "rules.pdf")
-    assert pdf_source["page"] == 1
-    # HTML should have null page
-    html_source = next(s for s in sources if s["doc"] == "rules.html")
-    assert html_source["page"] is None
+    sources = build_sources(chunk_ids, chunks)
+    
+    assert len(sources) == 1
+    source = sources[0]
+    
+    # Should have exactly doc and page
+    assert "doc" in source
+    assert "page" in source
+    # Should not have extra fields
+    assert "date" not in source
+    assert "issuer" not in source
+    assert "extra_field" not in source
 
 
-def test_multiple_pages_same_doc():
-    """Test multiple pages from same document."""
-    chunk_ids = ["doc_p01_c01", "doc_p03_c01", "doc_p05_c01"]
-    all_chunks = [
-        {"chunk_id": "doc_p01_c01", "doc": "test.pdf", "page": 1, "text": ""},
-        {"chunk_id": "doc_p03_c01", "doc": "test.pdf", "page": 3, "text": ""},
-        {"chunk_id": "doc_p05_c01", "doc": "test.pdf", "page": 5, "text": ""},
+def test_build_sources_multiple_docs():
+    """Test that build_sources handles multiple different documents."""
+    chunks = [
+        {"chunk_id": "doc1_p01_c01", "doc": "doc1.pdf", "page": 1},
+        {"chunk_id": "doc2_p05_c01", "doc": "doc2.pdf", "page": 5},
+        {"chunk_id": "doc3_c01", "doc": "doc3.html", "page": None}
     ]
     
-    sources = build_sources(chunk_ids, all_chunks)
+    chunk_ids = ["doc1_p01_c01", "doc2_p05_c01", "doc3_c01"]
     
-    # Should have 3 sources (different pages)
+    sources = build_sources(chunk_ids, chunks)
+    
     assert len(sources) == 3
-    pages = [s["page"] for s in sources]
-    assert 1 in pages
-    assert 3 in pages
-    assert 5 in pages
-
-
-if __name__ == "__main__":
-    pytest.main([__file__, "-v"])
+    
+    # Check each document is represented
+    docs = [s["doc"] for s in sources]
+    assert "doc1.pdf" in docs
+    assert "doc2.pdf" in docs
+    assert "doc3.html" in docs

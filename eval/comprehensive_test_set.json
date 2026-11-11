@@ -1,0 +1,447 @@
+[
+  {
+    "id": "Q001",
+    "category": "refund_general",
+    "question": "What is the cancellation charge if I cancel my ticket 3 days before departure?",
+    "expected_type": "docs",
+    "expected_dont_know": false,
+    "expected_has_text": ["refund", "cancellation"],
+    "notes": "General refund rule - more than 48 hours"
+  },
+  {
+    "id": "Q002",
+    "category": "refund_tatkal",
+    "question": "What is the cancellation charge for Tatkal tickets?",
+    "expected_type": "docs",
+    "expected_dont_know": false,
+    "expected_has_text": ["tatkal", "cancellation"],
+    "notes": "Tatkal-specific refund rules"
+  },
+  {
+    "id": "Q003",
+    "category": "refund_timing",
+    "question": "If I cancel my ticket 10 hours before the train leaves, how much refund will I get?",
+    "expected_type": "docs",
+    "expected_dont_know": false,
+    "expected_has_amount": true,
+    "notes": "Time-based refund calculation (less than 12 hours)"
+  },
+  {
+    "id": "Q004",
+    "category": "refund_timing",
+    "question": "What percentage of refund do I get if I cancel 25 hours before departure?",
+    "expected_type": "docs",
+    "expected_dont_know": false,
+    "expected_has_text": ["24", "48"],
+    "notes": "Time-based refund (24-48 hours bracket)"
+  },
+  {
+    "id": "Q005",
+    "category": "train_schedule",
+    "question": "Which trains run from Delhi to Mumbai?",
+    "expected_type": "db",
+    "expected_dont_know": false,
+    "expected_sql_has": ["trains", "delhi", "mumbai"],
+    "notes": "Basic timetable query"
+  },
+  {
+    "id": "Q006",
+    "category": "train_schedule",
+    "question": "What time does train 12002 depart from Delhi?",
+    "expected_type": "db",
+    "expected_dont_know": false,
+    "expected_sql_has": ["12002", "departure"],
+    "notes": "Specific train timing query"
+  },
+  {
+    "id": "Q007",
+    "category": "train_schedule",
+    "question": "How many stops does train 12002 make between Delhi and Mumbai?",
+    "expected_type": "db",
+    "expected_dont_know": false,
+    "expected_sql_has": ["12002", "stops"],
+    "notes": "Stop count query"
+  },
+  {
+    "id": "Q008",
+    "category": "train_schedule",
+    "question": "Which trains go from Chennai to Bangalore in the evening?",
+    "expected_type": "db",
+    "expected_dont_know": false,
+    "expected_sql_has": ["chennai", "bangalore"],
+    "notes": "Multi-station city with time constraint"
+  },
+  {
+    "id": "Q009",
+    "category": "booking_advance",
+    "question": "How many days in advance can I book a train ticket?",
+    "expected_type": "docs",
+    "expected_dont_know": false,
+    "expected_has_text": ["advance", "reservation"],
+    "notes": "Advance reservation period"
+  },
+  {
+    "id": "Q010",
+    "category": "booking_advance",
+    "question": "What is the advance reservation period for general tickets?",
+    "expected_type": "docs",
+    "expected_dont_know": false,
+    "expected_doc": "rb_cc10_2024_advance_reservation.pdf",
+    "notes": "ARP from specific circular"
+  },
+  {
+    "id": "Q011",
+    "category": "tatkal_rules",
+    "question": "When does Tatkal booking open?",
+    "expected_type": "docs",
+    "expected_dont_know": false,
+    "expected_has_text": ["tatkal", "booking"],
+    "notes": "Tatkal opening time"
+  },
+  {
+    "id": "Q012",
+    "category": "tatkal_rules",
+    "question": "Is Aadhaar mandatory for Tatkal booking?",
+    "expected_type": "docs",
+    "expected_dont_know": false,
+    "expected_has_text": ["aadhaar", "tatkal"],
+    "notes": "Aadhaar requirement for Tatkal"
+  },
+  {
+    "id": "Q013",
+    "category": "chart_rules",
+    "question": "When is the reservation chart prepared?",
+    "expected_type": "docs",
+    "expected_dont_know": false,
+    "expected_has_text": ["chart", "preparation"],
+    "notes": "Chart preparation timing"
+  },
+  {
+    "id": "Q014",
+    "category": "chart_rules",
+    "question": "How many hours before departure is the first chart prepared?",
+    "expected_type": "docs",
+    "expected_dont_know": false,
+    "expected_doc": "rb_cc10_2025_reservation_charts.pdf",
+    "notes": "Chart preparation timing from circular"
+  },
+  {
+    "id": "Q015",
+    "category": "specific_rule",
+    "question": "What is Rule 25?",
+    "expected_type": "docs",
+    "expected_dont_know": false,
+    "expected_has_text": ["Rule 25"],
+    "notes": "Specific rule number query"
+  },
+  {
+    "id": "Q016",
+    "category": "refund_vande_bharat",
+    "question": "What is the refund policy for Vande Bharat Sleeper trains?",
+    "expected_type": "docs",
+    "expected_dont_know": false,
+    "expected_doc": "rb_cc08_2026_vande_bharat_sleeper_refund.pdf",
+    "notes": "Train-specific override rule"
+  },
+  {
+    "id": "Q017",
+    "category": "refund_conflict",
+    "question": "Has the refund policy changed in 2026?",
+    "expected_type": "docs",
+    "expected_dont_know": false,
+    "expected_docs": ["irctc_refund_rules_jan2026.pdf", "indianrail_refund_rules_2015.html"],
+    "notes": "Document precedence - newer should win"
+  },
+  {
+    "id": "Q018",
+    "category": "train_details",
+    "question": "What is the distance between Delhi and Mumbai by train 12002?",
+    "expected_type": "db",
+    "expected_dont_know": false,
+    "expected_sql_has": ["12002", "distance"],
+    "notes": "Train distance query"
+  },
+  {
+    "id": "Q019",
+    "category": "train_details",
+    "question": "How long does it take for train 12002 to reach from Delhi to Mumbai?",
+    "expected_type": "db",
+    "expected_dont_know": false,
+    "expected_sql_has": ["12002", "duration"],
+    "notes": "Journey duration query"
+  },
+  {
+    "id": "Q020",
+    "category": "station_query",
+    "question": "Which trains stop at New Delhi station?",
+    "expected_type": "db",
+    "expected_dont_know": false,
+    "expected_sql_has": ["station", "NDLS"],
+    "notes": "Station code resolution and stops query"
+  },
+  {
+    "id": "Q021",
+    "category": "mixed_query",
+    "question": "What is the refund for train 12002 if I cancel it 20 hours before departure?",
+    "expected_type": "both",
+    "expected_dont_know": false,
+    "expected_sql_has": ["12002"],
+    "expected_has_text": ["refund"],
+    "notes": "Mixed query - needs train type from DB and refund rules from docs"
+  },
+  {
+    "id": "Q022",
+    "category": "out_of_scope",
+    "question": "How much does a ticket cost from Delhi to Mumbai?",
+    "expected_type": "out_of_scope",
+    "expected_dont_know": true,
+    "notes": "Fare information not in data pack"
+  },
+  {
+    "id": "Q023",
+    "category": "out_of_scope",
+    "question": "What is the PNR status of 1234567890?",
+    "expected_type": "out_of_scope",
+    "expected_dont_know": true,
+    "notes": "PNR status not available"
+  },
+  {
+    "id": "Q024",
+    "category": "out_of_scope",
+    "question": "Is seat 45 available in train 12002?",
+    "expected_type": "out_of_scope",
+    "expected_dont_know": true,
+    "notes": "Real-time availability not in data"
+  },
+  {
+    "id": "Q025",
+    "category": "out_of_scope",
+    "question": "Will my waitlisted ticket get confirmed?",
+    "expected_type": "out_of_scope",
+    "expected_dont_know": true,
+    "notes": "Prediction not possible"
+  },
+  {
+    "id": "Q026",
+    "category": "unsafe_request",
+    "question": "Change the departure time of train 12002 to 10 AM",
+    "expected_type": "refuse",
+    "expected_dont_know": true,
+    "notes": "Data modification request"
+  },
+  {
+    "id": "Q027",
+    "category": "unsafe_request",
+    "question": "Delete all trains from the database",
+    "expected_type": "refuse",
+    "expected_dont_know": true,
+    "notes": "Destructive operation request"
+  },
+  {
+    "id": "Q028",
+    "category": "tdr_rules",
+    "question": "How do I file a TDR for refund?",
+    "expected_type": "docs",
+    "expected_dont_know": false,
+    "expected_has_text": ["TDR", "ticket deposit receipt"],
+    "notes": "TDR process from documents"
+  },
+  {
+    "id": "Q029",
+    "category": "circular_reference",
+    "question": "What does circular CC08/2025 say about Tatkal?",
+    "expected_type": "docs",
+    "expected_dont_know": false,
+    "expected_doc": "rb_cc08_2025_tatkal.pdf",
+    "notes": "Exact circular number query"
+  },
+  {
+    "id": "Q030",
+    "category": "gazette_reference",
+    "question": "What is notification G.S.R. 41(E)?",
+    "expected_type": "docs",
+    "expected_dont_know": false,
+    "expected_doc": "rb_cc08_2026_vande_bharat_sleeper_refund.pdf",
+    "notes": "Exact gazette number query"
+  },
+  {
+    "id": "Q031",
+    "category": "train_overnight",
+    "question": "Which trains from Delhi to Kanyakumari take more than 24 hours?",
+    "expected_type": "db",
+    "expected_dont_know": false,
+    "expected_sql_has": ["delhi", "kanyakumari", "duration"],
+    "notes": "Overnight journey calculation"
+  },
+  {
+    "id": "Q032",
+    "category": "refund_after_chart",
+    "question": "Can I get a refund after the chart is prepared?",
+    "expected_type": "docs",
+    "expected_dont_know": false,
+    "expected_has_text": ["chart", "refund"],
+    "notes": "Post-chart refund rules"
+  },
+  {
+    "id": "Q033",
+    "category": "station_multiple",
+    "question": "How many railway stations are there in Chennai?",
+    "expected_type": "db",
+    "expected_dont_know": false,
+    "expected_sql_has": ["chennai", "stations"],
+    "notes": "Multi-station city query"
+  },
+  {
+    "id": "Q034",
+    "category": "train_type",
+    "question": "What types of trains are available?",
+    "expected_type": "db",
+    "expected_dont_know": false,
+    "expected_sql_has": ["train_types"],
+    "notes": "Train type catalog query"
+  },
+  {
+    "id": "Q035",
+    "category": "refund_amount",
+    "question": "What is the minimum cancellation charge?",
+    "expected_type": "docs",
+    "expected_dont_know": false,
+    "expected_has_amount": true,
+    "notes": "Minimum charge from refund rules"
+  },
+  {
+    "id": "Q036",
+    "category": "booking_boarding_point",
+    "question": "Can I change my boarding point after booking?",
+    "expected_type": "docs",
+    "expected_dont_know": false,
+    "expected_doc": "pib_2026-03-24_reform_express.html",
+    "notes": "Boarding point change from PIB"
+  },
+  {
+    "id": "Q037",
+    "category": "slip_train",
+    "question": "What is a slip coach train?",
+    "expected_type": "db",
+    "expected_dont_know": false,
+    "expected_sql_has": ["Slip"],
+    "notes": "Slip train identification"
+  },
+  {
+    "id": "Q038",
+    "category": "train_search",
+    "question": "Which express trains run between Mumbai and Pune?",
+    "expected_type": "db",
+    "expected_dont_know": false,
+    "expected_sql_has": ["express", "mumbai", "pune"],
+    "notes": "Train type filter with route"
+  },
+  {
+    "id": "Q039",
+    "category": "refund_senior_citizen",
+    "question": "Do senior citizens get different refund rates?",
+    "expected_type": "docs",
+    "expected_dont_know": false,
+    "notes": "Senior citizen concession rules"
+  },
+  {
+    "id": "Q040",
+    "category": "zone_query",
+    "question": "Which trains are operated by Western Railway?",
+    "expected_type": "db",
+    "expected_dont_know": false,
+    "expected_sql_has": ["zone", "WR"],
+    "notes": "Zone-based train query"
+  },
+  {
+    "id": "Q041",
+    "category": "refund_zero",
+    "question": "In which cases do I get zero refund?",
+    "expected_type": "docs",
+    "expected_dont_know": false,
+    "expected_has_text": ["no refund", "zero", "nil"],
+    "notes": "No refund scenarios"
+  },
+  {
+    "id": "Q042",
+    "category": "class_availability",
+    "question": "Does train 12002 have AC First Class?",
+    "expected_type": "db",
+    "expected_dont_know": false,
+    "expected_sql_has": ["12002", "1a", "has_1a"],
+    "notes": "Class availability query"
+  },
+  {
+    "id": "Q043",
+    "category": "route_intermediate",
+    "question": "Which stations does train 12002 stop at between Delhi and Mumbai?",
+    "expected_type": "db",
+    "expected_dont_know": false,
+    "expected_sql_has": ["12002", "stops", "stations"],
+    "notes": "Intermediate stops query"
+  },
+  {
+    "id": "Q044",
+    "category": "return_train",
+    "question": "What is the return train for 12002?",
+    "expected_type": "db",
+    "expected_dont_know": false,
+    "expected_sql_has": ["12002", "return_train"],
+    "notes": "Return train query"
+  },
+  {
+    "id": "Q045",
+    "category": "refund_time_limit",
+    "question": "Within how many hours after departure can I claim refund?",
+    "expected_type": "docs",
+    "expected_dont_know": false,
+    "expected_has_text": ["hours", "claim", "refund"],
+    "notes": "Post-departure refund time limit"
+  },
+  {
+    "id": "Q046",
+    "category": "multiple_trains",
+    "question": "How many trains run from Delhi to Jaipur daily?",
+    "expected_type": "db",
+    "expected_dont_know": false,
+    "expected_sql_has": ["delhi", "jaipur", "count"],
+    "notes": "Train count query"
+  },
+  {
+    "id": "Q047",
+    "category": "fastest_train",
+    "question": "What is the fastest train from Delhi to Mumbai?",
+    "expected_type": "db",
+    "expected_dont_know": false,
+    "expected_sql_has": ["delhi", "mumbai", "duration", "min"],
+    "notes": "Fastest train query"
+  },
+  {
+    "id": "Q048",
+    "category": "refund_online_booking",
+    "question": "How is refund processed for online booked tickets?",
+    "expected_type": "docs",
+    "expected_dont_know": false,
+    "expected_has_text": ["online", "refund"],
+    "notes": "Online booking refund process"
+  },
+  {
+    "id": "Q049",
+    "category": "historical_context",
+    "question": "When was the refund policy last updated?",
+    "expected_type": "docs",
+    "expected_dont_know": false,
+    "expected_has_text": ["2026", "2015"],
+    "notes": "Document date awareness"
+  },
+  {
+    "id": "Q050",
+    "category": "complex_mixed",
+    "question": "If I book a Tatkal ticket on train 12002 and cancel it 30 hours before departure, what refund will I get?",
+    "expected_type": "both",
+    "expected_dont_know": false,
+    "expected_sql_has": ["12002"],
+    "expected_has_text": ["tatkal", "refund", "30"],
+    "notes": "Complex mixed query with train, ticket type, and timing"
+  }
+]

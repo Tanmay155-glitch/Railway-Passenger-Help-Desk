@@ -159,15 +159,15 @@ def execute_safe_sql(
     if timeout_ms is None:
         timeout_ms = config.SQL_TIMEOUT_MS
     
-    # Strip trailing semicolons first (some models add them)
+    # Strip trailing semicolons FIRST (LLMs often add them)
     sql = sql.strip().rstrip(';').strip()
     
-    # Guard check
+    # Guard check on cleaned SQL
     is_safe, reason = guard_sql(sql)
     if not is_safe:
         raise ValueError(f"Unsafe SQL rejected: {reason}")
     
-    # Wrap with LIMIT
+    # Wrap with LIMIT (this adds wrapping SELECT)
     sql = wrap_with_limit(sql)
     
     # Open in read-only mode

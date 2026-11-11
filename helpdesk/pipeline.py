@@ -28,7 +28,7 @@ def answer_from_docs(question: str, llm_client: GeminiClient) -> Dict:
         Response dictionary
     """
     try:
-        # Search for relevant chunks
+        # Search for relevant chunks with neighbors
         results, neighbors = search_with_context(question, k=5)
         
         if not results:
@@ -49,10 +49,12 @@ def answer_from_docs(question: str, llm_client: GeminiClient) -> Dict:
                 "dont_know": True
             }
         
-        # Combine results and neighbors for context
+        # Combine results and neighbors for context expansion
         all_chunks = results + neighbors
         
-        # Generate answer
+        logger.debug(f"Passing {len(results)} main chunks + {len(neighbors)} neighbor chunks to answer generation")
+        
+        # Generate answer with expanded context
         answer_text, sources, sufficient = generate_answer(question, all_chunks, llm_client)
         
         return {

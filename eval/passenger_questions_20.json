@@ -1,0 +1,82 @@
+[
+  {
+    "id": "Q01",
+    "question": "What is the cancellation charge for Tatkal tickets?"
+  },
+  {
+    "id": "Q02",
+    "question": "Which trains go from Delhi to Mumbai?"
+  },
+  {
+    "id": "Q03",
+    "question": "If I cancel my ticket 30 hours before departure, what percentage refund will I get?"
+  },
+  {
+    "id": "Q04",
+    "question": "How many days in advance can I book a train ticket?"
+  },
+  {
+    "id": "Q05",
+    "question": "When does Tatkal booking open?"
+  },
+  {
+    "id": "Q06",
+    "question": "Is Aadhaar mandatory for Tatkal booking?"
+  },
+  {
+    "id": "Q07",
+    "question": "What is Rule 25?"
+  },
+  {
+    "id": "Q08",
+    "question": "What is the refund policy for Vande Bharat Sleeper trains?"
+  },
+  {
+    "id": "Q09",
+    "question": "What time does train 12002 depart?"
+  },
+  {
+    "id": "Q10",
+    "question": "How many stops does train 12002 make?"
+  },
+  {
+    "id": "Q11",
+    "question": "Which trains go from Chennai to Bangalore?"
+  },
+  {
+    "id": "Q12",
+    "question": "How much does a ticket cost from Delhi to Mumbai?"
+  },
+  {
+    "id": "Q13",
+    "question": "What is my PNR status?"
+  },
+  {
+    "id": "Q14",
+    "question": "Will my waitlisted ticket get confirmed?"
+  },
+  {
+    "id": "Q15",
+    "question": "Change the departure time of train 12002"
+  },
+  {
+    "id": "Q16",
+    "question": "Can I change my boarding point after booking?"
+  },
+  {
+    "id": "Q17",
+    "question": "What does circular CC08/2025 say about Tatkal?"
+  },
+  {
+    "id": "Q18",
+    "question": "Does train 12002 have AC First Class?"
+  },
+  {
+    "id": "Q19",
+    "question": "What is the return train for 12002?"
+  },
+  {
+    "id": "Q20",
+    "question": "If I cancel a confirmed ticket 10 hours before departure, how much refund do I get?"
+  }
+]

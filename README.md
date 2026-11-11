@@ -72,3 +72,179 @@ Each question in `questions/sample_questions.json` has `id`, `question`, the mod
 4. Run all SQL on a read-only connection: `sqlite3.connect("file:database/rail_timetable.db?mode=ro", uri=True)`.
 
 The class notebooks and your assignments are a starting point, not a limit: use any free library or model that makes the answers more accurate.
+
+---
+
+## Setup & Installation
+
+### 1. Prerequisites
+- Python 3.9 or higher
+- Google Gemini API key ([Get one free here](https://makersuite.google.com/app/apikey))
+
+### 2. Install Dependencies
+```powershell
+# Activate virtual environment (if not already active)
+.\.venv\Scripts\Activate.ps1
+
+# Install required packages
+pip install -r requirements.txt
+```
+
+### 3. Configure API Key
+Create a `.env` file in the project root (use `.env.example` as template):
+```
+GEMINI_API_KEY=your_actual_api_key_here
+```
+
+### 4. Build Search Index
+```powershell
+python build_index.py
+```
+
+This creates:
+- `index/chunks.json` - document chunks with metadata
+- `index/bm25.pkl` - BM25 search index
+- `index/embeddings.npy` - semantic embeddings (optional)
+- `index/manifest.json` - index metadata
+- `index/schema.txt` - database schema for text-to-SQL
+
+---
+
+## Usage
+
+### Interactive Mode (Terminal)
+```powershell
+python ask.py
+```
+
+Ask questions interactively. Type `exit` or `quit` to stop.
+
+**Example:**
+```
+Question: What is the refund for AC 1st class if I cancel 2 days before departure?
+Answer: If you cancel an AC 1st class ticket 48 hours or more before departure,
+you will receive a 75% refund after deducting clerkage charges (₹60 for this class).
+Sources: irctc_refund_rules_jan2026.pdf (page 3)
+```
+
+### Batch Mode (Multiple Questions)
+```powershell
+python run_questions.py eval/test_set.json results.json
+```
+
+Processes all questions from a JSON file and saves results.
+
+### Python API
+```python
+from helpdesk.pipeline import ask
+
+result = ask("Which trains run from Mumbai to Delhi?")
+print(result["answer"])
+print(result["sources"])
+print(result["sql"])
+```
+
+---
+
+## Testing
+
+### Run Unit Tests
+```powershell
+pytest tests/ -v
+```
+
+### Run System Evaluation
+```powershell
+python run_questions.py eval/test_set.json eval/results.json
+python eval/evaluate.py eval/test_set.json eval/results.json
+```
+
+**Current Test Results:**
+- **80% accuracy** on 20 real passenger questions
+- **100% SQL success rate** (6/6 queries)
+- **100% refusal accuracy** (4/4 out-of-scope correctly refused)
+- See `TEST_RESULTS_SUMMARY.md` for detailed results
+
+---
+
+## Project Structure
+
+```
+rail_capstone_pack/
+├── helpdesk/              # Main package
+│   ├── pipeline.py        # Main ask() function
+│   ├── router.py          # Question routing logic
+│   ├── search.py          # Document search (BM25 + semantic)
+│   ├── sql.py             # Text-to-SQL generation
+│   ├── sql_guard.py       # SQL security validation
+│   ├── answer.py          # Answer generation with LLM
+│   ├── entities.py        # Entity extraction (stations, trains)
+│   ├── ingest.py          # Document ingestion (PDF/HTML/OCR)
+│   ├── llm.py             # LLM interface (Gemini)
+│   └── config.py          # Configuration management
+├── data/
+│   ├── documents/         # Railway rule documents (PDF/HTML)
+│   ├── database/          # SQLite timetable database
+│   └── questions/         # Sample questions
+├── eval/
+│   ├── test_set.json      # Evaluation questions
+│   ├── evaluate.py        # Evaluation script
+│   └── experiments.md     # Performance tracking
+├── tests/                 # Unit tests (51 tests)
+├── index/                 # Search indices (generated)
+├── build_index.py         # Index builder
+├── ask.py                 # Interactive CLI
+├── run_questions.py       # Batch processor
+├── README.md              # This file
+├── design.md              # System architecture
+├── requirements.md        # Detailed specifications
+└── SOURCES.md             # Data provenance
+
+```
+
+---
+
+## Documentation
+
+- **README.md** (this file) - Setup, usage, and overview
+- **design.md** - System architecture and design decisions
+- **requirements.md** - Functional and non-functional requirements
+- **SOURCES.md** - Data sources and provenance
+- **TEST_RESULTS_SUMMARY.md** - Test results and metrics
+- **data/database/schema.md** - Database schema reference
+- **eval/experiments.md** - Performance tracking
+
+---
+
+## Key Features
+
+✅ **Hybrid Search** - BM25 keyword + semantic embeddings  
+✅ **Text-to-SQL** - Natural language to SQLite queries  
+✅ **Multi-format Docs** - PDF, HTML, scanned images (OCR)  
+✅ **Security** - SQL injection protection with guard system  
+✅ **Refusal Logic** - Properly declines out-of-scope questions  
+✅ **Time-aware Rules** - Newer documents override older ones  
+✅ **Refund Calculator** - Python-based percentage computation  
+✅ **Entity Recognition** - Station codes, train numbers  
+✅ **Neighbor Context** - Expands context with surrounding chunks  
+✅ **Comprehensive Testing** - 51 unit tests, 80% accuracy
+
+---
+
+## Performance
+
+- **Response Time**: ~5 seconds average
+- **Accuracy**: 80% on real passenger questions
+- **SQL Success**: 100% (6/6 queries executed correctly)
+- **Refusal Accuracy**: 100% (4/4 out-of-scope correctly refused)
+- **Test Coverage**: 51 unit tests across 5 modules
+
+---
+
+## Notes
+
+- This system uses Google Gemini 1.5 Flash for LLM tasks
+- The timetable is a 2016 snapshot (8,990 stations, 5,208 trains)
+- Documents are from 2015-2026 (check SOURCES.md for details)
+- Rules are parsed from official Railway Board circulars and IRCTC documents
+- This is an educational project, not an official railway service

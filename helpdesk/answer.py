@@ -271,26 +271,102 @@ def compute_refund_percentage(
     chunks: List[Dict]
 ) -> Tuple[Optional[float], Optional[str]]:
     """
-    Compute refund percentage based on hours to departure.
+    Compute refund percentage based on hours to departure and train type.
     This arithmetic is done in Python, not in the LLM.
     
     Args:
         hours_to_departure: Hours until train departure
-        train_type: Type of train (e.g., "Tatkal", "Vande Bharat Sleeper")
+        train_type: Type of train (e.g., "Tatkal", "Vande Bharat Sleeper", "General")
         chunks: Chunks containing refund rules
         
     Returns:
         Tuple of (percentage, clause_reference)
     """
-    # This is a placeholder for arithmetic computation
-    # In full implementation, this would parse the refund rules from chunks
-    # and apply the time-bucket logic
+    import re
     
-    # For now, return None to indicate it should be handled by LLM
-    # But in production, this extracts rules like:
-    # "> 48 hours: 75% refund"
-    # "24-48 hours: 50% refund"
-    # "< 24 hours: 25% refund"
-    # Then computes which bucket hours_to_departure falls into
+    # Extract refund rules from chunks
+    refund_rules = []
     
+    for chunk in chunks:
+        text = chunk.get('text', '')
+        
+        # Look for time-based refund patterns
+        # Pattern: "> 48 hours: 75%" or "More than 48 hours before departure: 75% refund"
+        patterns = [
+            r'(?:>|more than|above)\s*(\d+)\s*(?:hours?|hrs?)\s*(?:before)?[:\s]+(\d+)%',
+            r'(\d+)\s*(?:hours?|hrs?)\s*(?:to|[-–])\s*(\d+)\s*(?:hours?|hrs?)[:\s]+(\d+)%',
+            r'(?:<|less than|below)\s*(\d+)\s*(?:hours?|hrs?)\s*(?:before)?[:\s]+(\d+)%',
+            r'within\s*(\d+)\s*(?:hours?|hrs?)[:\s]+(\d+)%'
+        ]
+        
+        for pattern in patterns:
+            matches = re.finditer(pattern, text, re.IGNORECASE)
+            for match in matches:
+                groups = match.groups()
+                if len(groups) == 2:
+                    # Simple pattern: "hours: percentage"
+                    try:
+                        hours = float(groups[0])
+                        percentage = float(groups[1])
+                        
+                        # Determine type based on pattern
+                        if '>' in match.group(0) or 'more than' in match.group(0).lower():
+                            rule_type = 'greater_than'
+                        elif '<' in match.group(0) or 'less than' in match.group(0).lower() or 'within' in match.group(0).lower():
+                            rule_type = 'less_than'
+                        else:
+                            rule_type = 'exact'
+                        
+                        refund_rules.append({
+                            'hours': hours,
+                            'percentage': percentage,
+                            'type': rule_type,
+                            'doc': chunk.get('doc', ''),
+                            'page': chunk.get('page'),
+                            'text': match.group(0)
+                        })
+                    except ValueError:
+                        continue
+                elif len(groups) == 3:
+                    # Range pattern: "hours1 to hours2: percentage"
+                    try:
+                        hours_min = float(groups[0])
+                        hours_max = float(groups[1])
+                        percentage = float(groups[2])
+                        
+                        refund_rules.append({
+                            'hours_min': hours_min,
+                            'hours_max': hours_max,
+                            'percentage': percentage,
+                            'type': 'range',
+                            'doc': chunk.get('doc', ''),
+                            'page': chunk.get('page'),
+                            'text': match.group(0)
+                        })
+                    except ValueError:
+                        continue
+    
+    if not refund_rules:
+        logger.warning("No refund rules found in chunks")
+        return None, None
+    
+    # Sort rules by date (use most recent)
+    refund_rules.sort(key=lambda r: chunks[0].get('date', '2000-01-01'), reverse=True)
+    
+    # Apply rules to find matching percentage
+    for rule in refund_rules:
+        if rule['type'] == 'greater_than':
+            if hours_to_departure > rule['hours']:
+                return rule['percentage'], f"{rule['doc']} page {rule['page']}: {rule['text']}"
+        elif rule['type'] == 'less_than':
+            if hours_to_departure < rule['hours']:
+                return rule['percentage'], f"{rule['doc']} page {rule['page']}: {rule['text']}"
+        elif rule['type'] == 'range':
+            if rule['hours_min'] <= hours_to_departure <= rule['hours_max']:
+                return rule['percentage'], f"{rule['doc']} page {rule['page']}: {rule['text']}"
+        elif rule['type'] == 'exact':
+            if abs(hours_to_departure - rule['hours']) < 1:  # Within 1 hour
+                return rule['percentage'], f"{rule['doc']} page {rule['page']}: {rule['text']}"
+    
+    logger.warning(f"No matching refund rule for {hours_to_departure} hours")
     return None, None

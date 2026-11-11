@@ -1,0 +1,22 @@
+[
+  {
+    "id": "Q001",
+    "question": "What is the cancellation charge for Tatkal tickets?"
+  },
+  {
+    "id": "Q002",
+    "question": "Which trains go from Delhi to Mumbai?"
+  },
+  {
+    "id": "Q003",
+    "question": "What is Rule 25?"
+  },
+  {
+    "id": "Q004",
+    "question": "How much does a ticket cost from Delhi to Mumbai?"
+  },
+  {
+    "id": "Q005",
+    "question": "When is the reservation chart prepared?"
+  }
+]
